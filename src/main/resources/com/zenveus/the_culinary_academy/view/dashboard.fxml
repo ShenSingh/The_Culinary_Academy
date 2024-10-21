@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.Cursor?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.effect.Bloom?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="950.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.zenveus.the_culinary_academy.Controllers.DashboardController">
+    <children>
+        <AnchorPane prefHeight="600.0" prefWidth="200.0" style="-fx-background-color: #4d5254;">
+            <children>
+                <Button layoutX="57.0" layoutY="199.0" mnemonicParsing="false" onAction="#dashBtn" style="-fx-background-color: transpanent;" text="Dashbord" textFill="WHITE">
+                    <cursor>
+                        <Cursor fx:constant="HAND" />
+                    </cursor>
+                    <effect>
+                        <Bloom />
+                    </effect>
+                </Button>
+                <Button layoutX="63.0" layoutY="257.0" mnemonicParsing="false" onAction="#stuBtn" style="-fx-background-color: transpanent;" text="Student" textFill="WHITE">
+                    <effect>
+                        <Bloom />
+                    </effect>
+                    <cursor>
+                        <Cursor fx:constant="HAND" />
+                    </cursor>
+                </Button>
+                <Button layoutX="62.0" layoutY="319.0" mnemonicParsing="false" onAction="#teachBtn" style="-fx-background-color: transpanent;" text="Teacher" textFill="WHITE">
+                    <cursor>
+                        <Cursor fx:constant="HAND" />
+                    </cursor>
+                    <effect>
+                        <Bloom />
+                    </effect>
+                </Button>
+                <Button layoutX="69.0" layoutY="378.0" mnemonicParsing="false" onAction="#PaperBtn" style="-fx-background-color: transpanent;" text="Paper" textFill="WHITE">
+                    <cursor>
+                        <Cursor fx:constant="HAND" />
+                    </cursor>
+                    <effect>
+                        <Bloom />
+                    </effect>
+                </Button>
+                <Button layoutX="73.0" layoutY="439.0" mnemonicParsing="false" onAction="#feesBtn" style="-fx-background-color: transpanent;" text="Fees" textFill="WHITE">
+                    <cursor>
+                        <Cursor fx:constant="HAND" />
+                    </cursor>
+                    <effect>
+                        <Bloom />
+                    </effect>
+                </Button>
+                <Button layoutX="59.0" layoutY="568.0" mnemonicParsing="false" onAction="#logOutBtn" style="-fx-background-color: transpanent;" text="LogOut" textFill="WHITE">
+                    <font>
+                        <Font name="System Bold" size="14.0" />
+                    </font>
+                    <cursor>
+                        <Cursor fx:constant="HAND" />
+                    </cursor>
+                </Button>
+                <ImageView fitHeight="217.0" fitWidth="175.0" layoutX="10.0" layoutY="14.0" pickOnBounds="true" preserveRatio="true">
+                    <image>
+                        <Image url="@../image/ZenVeuse/logoWhite.png" />
+                    </image>
+                </ImageView>
+            </children>
+        </AnchorPane>
+        <AnchorPane layoutX="200.0" prefHeight="53.0" prefWidth="751.0" style="-fx-background-color: #00000020;">
+            <children>
+                <Text fill="#4b5051" layoutX="673.0" layoutY="32.0" strokeType="OUTSIDE" strokeWidth="0.0" text="ZenVeus">
+                    <font>
+                        <Font name="Carlito Bold" size="18.0" />
+                    </font>
+                </Text>
+                <Text fill="#575252" layoutX="26.0" layoutY="36.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Wellcome...">
+                    <font>
+                        <Font name="Jamrul" size="22.0" />
+                    </font>
+                </Text>
+                <ImageView fitHeight="53.0" fitWidth="56.0" layoutX="626.0" layoutY="4.0" pickOnBounds="true" preserveRatio="true">
+                    <image>
+                        <Image url="@../image/ZenVeuse/logoBlack.png" />
+                    </image>
+                </ImageView>
+            </children>
+        </AnchorPane>
+    </children>
+</AnchorPane>
