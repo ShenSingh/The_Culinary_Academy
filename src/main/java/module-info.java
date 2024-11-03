@@ -7,6 +7,6 @@ module com.zenveus.the_culinary_academy {
 
     opens com.zenveus.the_culinary_academy to javafx.fxml;
     exports com.zenveus.the_culinary_academy;
-    exports com.zenveus.the_culinary_academy.Controllers;
-    opens com.zenveus.the_culinary_academy.Controllers to javafx.fxml;
+    exports com.zenveus.the_culinary_academy.controllers;
+    opens com.zenveus.the_culinary_academy.controllers to javafx.fxml;
 }

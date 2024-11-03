@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<?import javafx.scene.text.Text?>
+<AnchorPane prefHeight="630.0" prefWidth="1065.0" style="-fx-background-color: transpanent; -fx-background-radius: 10;" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.zenveus.the_culinary_academy.controllers.ProgramController">
+    <children>
+        <Text fx:id="title" layoutX="77.0" layoutY="69.0" strokeType="OUTSIDE" strokeWidth="0.0" text="program" />
+    </children>
+</AnchorPane>

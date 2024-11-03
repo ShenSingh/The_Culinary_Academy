@@ -18,7 +18,7 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane prefHeight="500.0" prefWidth="700.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.zenveus.the_culinary_academy.Controllers.LoginController">
+<AnchorPane fx:id="rootNode" prefHeight="500.0" prefWidth="700.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.zenveus.the_culinary_academy.controllers.LoginController">
     <children>
         <BorderPane prefHeight="500.0" prefWidth="700.0">
             <left>

@@ -1,4 +1,4 @@
-package com.zenveus.the_culinary_academy.Controllers;
+package com.zenveus.the_culinary_academy.controllers;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -8,11 +8,16 @@ import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
+import javafx.scene.effect.DropShadow;
+import javafx.scene.layout.AnchorPane;
+import javafx.scene.paint.Color;
 import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 
 import java.io.IOException;
 
 public class LoginController {
+    public AnchorPane rootNode;
     private String name="admin";
     private String pass="admin";
 
@@ -60,28 +65,19 @@ public class LoginController {
         alert.setContentText(content);
         alert.showAndWait();
     }
-    public void setMainStage(Stage stage) {
-        this.mainStage = stage;
-    }
     //////////////////////////////////  dashbord  //////////////////////////////////////////////////
-    private static Stage DemoStage=new Stage();
 
     public void dashBord() throws IOException{
-        //
-        Parent rootNode = FXMLLoader.load(getClass().getResource("/home/shen/Documents/myProject/The_Culinary_Academy/src/main/resources/com/zenveus/the_culinary_academy/view/dashboard.fxml"));
-        Scene dashBord=new Scene(rootNode,950,600);
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/zenveus/the_culinary_academy/view/dashboard.fxml"));
+        Parent root = loader.load();
+        Scene scene = new Scene(root, Color.TRANSPARENT);
 
+        Stage stage = (Stage)this.rootNode.getScene().getWindow();
+        stage.setScene(scene);
+        stage.setResizable(false);
+        stage.centerOnScreen();
+        stage.show();
 
-        DemoStage.setScene(dashBord);
-        DemoStage.setTitle("DashBord");
+    }
 
-        mainStage.hide();
-        DemoStage.show();
-    }
-    static Stage getMainStage(){
-        return mainStage;
-    }
-    static Stage getDemoStage(){
-        return DemoStage;
-    }
 }
