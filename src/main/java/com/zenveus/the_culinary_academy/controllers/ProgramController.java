@@ -3,6 +3,7 @@ package com.zenveus.the_culinary_academy.controllers;
 import javafx.animation.TranslateTransition;
 import javafx.event.ActionEvent;
 import javafx.fxml.Initializable;
+import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
@@ -14,10 +15,19 @@ import java.net.URL;
 import java.util.ResourceBundle;
 
 public class ProgramController implements Initializable {
-    public Text title;
     public AnchorPane programRegMainAnchor;
-
     public ImageView reportLeftRightImage;
+
+    // program Fields
+    public TextField programIDField;
+    public TextField programDurationField;
+    public TextField programNameField;
+    public TextField programFeeField;
+
+    // program Side Pane Title
+    public Text sidePaneTitle;
+    // program Search Field
+    public TextField searchEmployee;
 
     private TranslateTransition sideTransition;
     private boolean isShow = false;
@@ -48,4 +58,35 @@ public class ProgramController implements Initializable {
         sideTransition.play();
     }
 
+    //  program back btn (search bar)
+    public void programBackBtn(ActionEvent actionEvent) {
+        System.out.println("click program page back Btn");
+    }
+    // program search filed enter click (search bar)
+    public void searchProgramClick(ActionEvent actionEvent) {
+        System.out.println("click program search Btn");
+    }
+
+    // program search clear btn (search bar)
+    public void searchProgramClearBtn(ActionEvent actionEvent) {
+        System.out.println("click program create Btn");
+    }
+
+    
+    
+    
+    // program delete btn
+    public void programDeleteBtn(ActionEvent actionEvent) {
+        System.out.println("click program delete Btn");
+    }
+    
+    // program save btn
+    public void programSaveBtn(ActionEvent actionEvent) {
+        System.out.println("click program save Btn");
+    }
+
+    // program update btn
+    public void programUpdateBtn(ActionEvent actionEvent) {
+        System.out.println("click program update Btn");
+    }
 }

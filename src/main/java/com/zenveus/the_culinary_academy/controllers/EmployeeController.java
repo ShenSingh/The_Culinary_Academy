@@ -15,13 +15,11 @@ import java.net.URL;
 import java.util.ResourceBundle;
 
 public class EmployeeController implements Initializable {
-    public Text title;
 
     public AnchorPane employeeRegMainAnchor;
-
     public ImageView reportLeftRightImage;
 
-    // Employee Registration Fields
+    // Employee Fields
     public TextField employeeIDField;
     public TextField employeeEmailField;
     public TextField employeeNameField;
@@ -70,7 +68,7 @@ public class EmployeeController implements Initializable {
     }
     // employee search filed enter click (search bar)
     public void searchEmployeeClick(ActionEvent actionEvent) {
-        System.out.println("click employee create Btn");
+        System.out.println("click employee search filed");
     }
     // employee search clear btn (search bar)
     public void searchEmployeeClearBtn(ActionEvent actionEvent) {

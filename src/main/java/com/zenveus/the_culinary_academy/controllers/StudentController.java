@@ -3,6 +3,8 @@ package com.zenveus.the_culinary_academy.controllers;
 import javafx.animation.TranslateTransition;
 import javafx.event.ActionEvent;
 import javafx.fxml.Initializable;
+import javafx.scene.control.DatePicker;
+import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
@@ -14,9 +16,22 @@ import java.net.URL;
 import java.util.ResourceBundle;
 
 public class StudentController implements Initializable {
-    public Text title;
+
     public AnchorPane reportMainAnchor;
     public ImageView reportLeftRightImage;
+
+    // Student Fields
+    public TextField studentAddressField;
+    public DatePicker studentDOBField;
+    public TextField studentPhoneField;
+    public TextField studentNICField;
+    public TextField studentNameField;
+    public TextField studentEmailField;
+    public TextField studentIDField;
+    // Student Search Field
+    public TextField searchStudent;
+    // Student Side Pane Title
+    public Text sidePaneTitle;
 
     private TranslateTransition sideTransition;
     private boolean isShow = false;
@@ -47,5 +62,34 @@ public class StudentController implements Initializable {
         sideTransition.setToX(isShow ? 1055 : 0);
         updateIcon();
         sideTransition.play();
+    }
+
+    //  student back btn (search bar)
+    public void studentBackBtn(ActionEvent actionEvent) {
+        System.out.println("click student page back Btn");
+    }
+    // student search filed enter click (search bar)
+    public void searchStudentClick(ActionEvent actionEvent) {
+        System.out.println("click student search filed");
+    }
+    // student search clear btn (search bar)
+    public void searchStudentClearBtn(ActionEvent actionEvent) {
+        System.out.println("click student create Btn");
+    }
+
+
+
+
+    // student delete btn
+    public void studentDeleteBtn(ActionEvent actionEvent) {
+        System.out.println("click student delete Btn");
+    }
+    // student save btn
+    public void studentSaveBtn(ActionEvent actionEvent) {
+        System.out.println("click student save Btn");
+    }
+    // student update btn
+    public void studentUpdateBtn(ActionEvent actionEvent) {
+        System.out.println("click student update Btn");
     }
 }
