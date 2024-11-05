@@ -14,4 +14,6 @@ module com.zenveus.the_culinary_academy {
     exports com.zenveus.the_culinary_academy.controllers;
     opens com.zenveus.the_culinary_academy.controllers to javafx.fxml;
     opens com.zenveus.the_culinary_academy.entity to org.hibernate.orm.core;
+    opens com.zenveus.the_culinary_academy.tm to javafx.base;
+    exports com.zenveus.the_culinary_academy.tm;
 }

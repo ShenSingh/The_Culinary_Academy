@@ -14,5 +14,4 @@ public class UserTm {
     String email;
     String phoneNumber;
     String address;
-    JFXButton actionBtn;
 }

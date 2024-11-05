@@ -1,7 +1,5 @@
 package com.zenveus.the_culinary_academy.config;
 
-import com.zenveus.the_culinary_academy.entity.*;
-import com.zenveus.the_culinary_academy.entity.Student;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
@@ -11,27 +9,29 @@ import java.util.Properties;
 
 public class FactoryConfiguration {
     private static FactoryConfiguration factoryConfiguration;
-    private final SessionFactory sessionFactory;
+    private SessionFactory sessionFactory;
 
     private FactoryConfiguration() {
-        Properties properties = new Properties();
+
+        // Set Hibernate properties programmatically
+        Properties hibernateProperties = new Properties();
         try {
-            properties.load(Thread.currentThread().getContextClassLoader().getResourceAsStream("hibernate.properties"));
+            hibernateProperties.load(FactoryConfiguration.class.getClassLoader().getResourceAsStream("hibernate.properties"));
         } catch (IOException e) {
-            e.printStackTrace();
+            throw new RuntimeException(e);
         }
 
+        // Configure Hibernate with properties and add annotated classes
         Configuration configuration = new Configuration()
-                .addAnnotatedClass(Payment.class)
-                .addAnnotatedClass(Program.class)
-                .addAnnotatedClass(Student.class)
-                .addAnnotatedClass(StudentProgram.class)
-                .addAnnotatedClass(User.class);
+                .addProperties(hibernateProperties)
+                .addAnnotatedClass(com.zenveus.the_culinary_academy.entity.Program.class)
+                .addAnnotatedClass(com.zenveus.the_culinary_academy.entity.Student.class)
+                .addAnnotatedClass(com.zenveus.the_culinary_academy.entity.StudentProgram.class)
+                .addAnnotatedClass(com.zenveus.the_culinary_academy.entity.User.class)
+                .addAnnotatedClass(com.zenveus.the_culinary_academy.entity.Payment.class);
 
-
-        configuration.setProperties(properties);
+        // Build the session factory
         sessionFactory = configuration.buildSessionFactory();
-        System.out.println("SessionFactory initialized successfully.");
     }
 
     public static FactoryConfiguration getInstance() {
@@ -45,3 +45,34 @@ public class FactoryConfiguration {
         return sessionFactory.openSession();
     }
 }
+
+//package com.zenveus.the_culinary_academy.config;
+//
+//
+//import org.hibernate.Session;
+//import org.hibernate.SessionFactory;
+//import org.hibernate.cfg.Configuration;
+//
+//public class FactoryConfiguration {
+//    private static FactoryConfiguration factoryConfiguration;
+//    private SessionFactory sessionFactory;
+//
+//    private FactoryConfiguration() {
+//        Configuration configuration = new Configuration().configure()
+//                .addAnnotatedClass(com.zenveus.the_culinary_academy.entity.Program.class)
+//                .addAnnotatedClass(com.zenveus.the_culinary_academy.entity.Student.class)
+//                .addAnnotatedClass(com.zenveus.the_culinary_academy.entity.StudentProgram.class)
+//                .addAnnotatedClass(com.zenveus.the_culinary_academy.entity.User.class)
+//                .addAnnotatedClass(com.zenveus.the_culinary_academy.entity.Payment.class);
+//        sessionFactory = configuration.configure().buildSessionFactory();
+//    }
+//
+//    public static FactoryConfiguration getInstance() {
+//        return (factoryConfiguration == null) ? factoryConfiguration =
+//                new FactoryConfiguration() : factoryConfiguration;
+//    }
+//
+//    public Session getSession() {
+//        return sessionFactory.openSession();
+//    }
+//}

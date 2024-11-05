@@ -12,4 +12,6 @@ public interface CrudDAO<T> extends SuperDAO {
     Object search(T entity) throws Exception;
 
     List<T> getAll() throws Exception;
+
+    Object exist(String id) throws Exception;
 }

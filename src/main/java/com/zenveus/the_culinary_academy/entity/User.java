@@ -15,7 +15,6 @@ import java.util.Set;
 @Table(name = "user")
 public class User {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "user_id")
     private String userId;
 
@@ -30,10 +29,6 @@ public class User {
 
     @Column(name = "address", nullable = false)
     private String address;
-
-
-
-
 
     @Column(name = "username", unique = true, nullable = false)
     private String username;
