@@ -13,12 +13,12 @@
 
 <AnchorPane prefHeight="630.0" prefWidth="1065.0" style="-fx-background-color: transpanent; -fx-background-radius: 20px;" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.zenveus.the_culinary_academy.controllers.ProgramController">
    <AnchorPane layoutX="5.0" layoutY="5.0" prefHeight="620.0" prefWidth="1055.0" style="-fx-background-color: rgba(0, 0, 0, 0.0); -fx-background-radius: 30px;">
-      <TableView layoutX="25.0" layoutY="277.0" prefHeight="325.0" prefWidth="712.0" style="-fx-background-color: transpanent; -fx-border-color: rgba(0, 0, 0, 0.4); -fx-border-width: 1px; -fx-border-radius: 5px; -fx-background-radius: 5px;">
+      <TableView fx:id="programTable" layoutX="25.0" layoutY="277.0" onMouseClicked="#rowClick" prefHeight="325.0" prefWidth="712.0" style="-fx-background-color: transpanent; -fx-border-color: rgba(0, 0, 0, 0.4); -fx-border-width: 1px; -fx-border-radius: 5px; -fx-background-radius: 5px;">
          <columns>
-            <TableColumn prefWidth="117.0" style="-fx-background-color: white; -fx-border-color: transparent transparent black transparent; -fx-border-width: 0 0 1px 0;" text="ID" />
-            <TableColumn prefWidth="313.0" style="-fx-background-color: white; -fx-border-color: transparent transparent black transparent; -fx-border-width: 0 0 1px 0;" text="Program Name" />
-            <TableColumn prefWidth="175.0" style="-fx-background-color: white; -fx-border-color: transparent transparent black transparent; -fx-border-width: 0 0 1px 0;" text="Duration" />
-            <TableColumn prefWidth="105.0" style="-fx-background-color: white; -fx-border-color: transparent transparent black transparent; -fx-border-width: 0 0 1px 0;" text="Fee(LKR)" />
+            <TableColumn fx:id="colProId" prefWidth="117.0" style="-fx-background-color: white; -fx-border-color: transparent transparent black transparent; -fx-border-width: 0 0 1px 0;" text="ID" />
+            <TableColumn fx:id="colProName" prefWidth="313.0" style="-fx-background-color: white; -fx-border-color: transparent transparent black transparent; -fx-border-width: 0 0 1px 0;" text="Program Name" />
+            <TableColumn fx:id="colProDuration" prefWidth="175.0" style="-fx-background-color: white; -fx-border-color: transparent transparent black transparent; -fx-border-width: 0 0 1px 0;" text="Duration" />
+            <TableColumn fx:id="colProFee" prefWidth="105.0" style="-fx-background-color: white; -fx-border-color: transparent transparent black transparent; -fx-border-width: 0 0 1px 0;" text="Fee(LKR)" />
          </columns>
       </TableView>
       <AnchorPane layoutX="15.0" layoutY="96.0" prefHeight="160.0" prefWidth="743.0" style="-fx-background-color: rgba(255, 255, 255, 0.3); -fx-background-radius: 30px;">
@@ -32,9 +32,9 @@
       </AnchorPane>
       <AnchorPane layoutX="769.0" layoutY="96.0" prefHeight="301.0" prefWidth="270.0" style="-fx-background-color: rgba(255, 255, 255, 0.3); -fx-background-radius: 30px;" />
       <AnchorPane layoutX="769.0" layoutY="408.0" prefHeight="194.0" prefWidth="270.0" style="-fx-background-color: rgba(255, 255, 255, 0.3); -fx-background-radius: 30px;" />
-      <VBox prefHeight="624.0" prefWidth="1055.0">
-         <AnchorPane fx:id="programRegMainAnchor" layoutX="10.0" maxWidth="1065.0" minWidth="1027.0" prefHeight="616.0" prefWidth="1065.0">
-            <AnchorPane layoutX="522.0" layoutY="96.0" prefHeight="528.0" prefWidth="533.0" style="-fx-background-color: white; -fx-background-radius: 30px 0px 00px 30px;">
+      <VBox layoutX="512.0" prefHeight="624.0" prefWidth="544.0">
+         <AnchorPane fx:id="programRegMainAnchor" layoutX="10.0" maxWidth="1065.0" minWidth="548.0" prefHeight="624.0" prefWidth="548.0">
+            <AnchorPane layoutX="11.0" layoutY="96.0" prefHeight="528.0" prefWidth="533.0" style="-fx-background-color: white; -fx-background-radius: 30px 0px 00px 30px;">
                <TextField fx:id="programIDField" layoutX="48.0" layoutY="136.0" prefHeight="45.0" prefWidth="210.0" promptText="Program ID" style="-fx-border-radius: 5px; -fx-border-color: rgb(0,0,0,0.4);" />
                <Text fill="#0000009d" layoutX="50.0" layoutY="131.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Program ID">
                   <font>

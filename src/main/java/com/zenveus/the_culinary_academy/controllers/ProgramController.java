@@ -1,11 +1,15 @@
 package com.zenveus.the_culinary_academy.controllers;
 
+import com.zenveus.the_culinary_academy.tm.ProgramTm;
 import javafx.animation.TranslateTransition;
 import javafx.event.ActionEvent;
 import javafx.fxml.Initializable;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.text.Text;
 import javafx.util.Duration;
@@ -28,6 +32,15 @@ public class ProgramController implements Initializable {
     public Text sidePaneTitle;
     // program Search Field
     public TextField searchEmployee;
+
+    // table
+    public TableView<ProgramTm> programTable;
+    // collunm
+    public TableColumn<?,?> colProId;
+    public TableColumn<?,?> colProName;
+    public TableColumn<?,?> colProDuration;
+    public TableColumn<?,?> colProFee;
+
 
     private TranslateTransition sideTransition;
     private boolean isShow = false;
@@ -88,5 +101,9 @@ public class ProgramController implements Initializable {
     // program update btn
     public void programUpdateBtn(ActionEvent actionEvent) {
         System.out.println("click program update Btn");
+    }
+
+    public void rowClick(MouseEvent mouseEvent) {
+        System.out.println("click program row");
     }
 }
