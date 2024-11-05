@@ -21,12 +21,16 @@ public class LoginController {
     private String name="admin";
     private String pass="admin";
 
+    private boolean isPasswordVisible = false;  // Track visibility state
+
+
     @FXML
     private TextField uNameText;
 
     @FXML
     private PasswordField uPassText;
-
+    @FXML
+    public TextField uPassVisibleText;
     @FXML
     private static Stage mainStage;
 
@@ -80,4 +84,19 @@ public class LoginController {
 
     }
 
+    public void passwordShowBtn(ActionEvent actionEvent) {
+        if (isPasswordVisible) {
+            // Hide password
+            uPassText.setText(uPassVisibleText.getText());
+            uPassText.setVisible(true);
+            uPassVisibleText.setVisible(false);
+        } else {
+            // Show password
+            uPassVisibleText.setText(uPassText.getText());
+            uPassVisibleText.setVisible(true);
+            uPassText.setVisible(false);
+
+        }
+        isPasswordVisible = !isPasswordVisible;  // Toggle the state
+    }
 }

@@ -61,7 +61,7 @@ public class DashboardController  implements Initializable {
 
     private void setWellcomeAndDate() {
         wellcomeText.setText("Welcome, Admin");
-        date.setText("Today is " + java.time.LocalDate.now());
+        date.setText(String.valueOf(java.time.LocalDate.now()));
     }
 
     private void setCounts() {

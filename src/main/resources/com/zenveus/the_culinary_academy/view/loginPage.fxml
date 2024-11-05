@@ -18,13 +18,13 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane fx:id="rootNode" prefHeight="500.0" prefWidth="700.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.zenveus.the_culinary_academy.controllers.LoginController">
+<AnchorPane fx:id="rootNode" prefHeight="501.0" prefWidth="827.0" style="-fx-background-color: rgb(255,255,255,0.4);" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.zenveus.the_culinary_academy.controllers.LoginController">
     <children>
-        <BorderPane prefHeight="500.0" prefWidth="700.0">
+        <BorderPane prefHeight="501.0" prefWidth="827.0" style="-fx-background-color: rgb(0,0,0,0.0);">
             <left>
-                <AnchorPane prefHeight="501.0" prefWidth="358.0" style="-fx-background-color: #63BDE5;" BorderPane.alignment="CENTER">
+                <AnchorPane prefHeight="501.0" prefWidth="359.0" style="-fx-background-color: rgb(0,0,0,0.0);" BorderPane.alignment="CENTER">
                     <children>
-                        <ImageView fitHeight="506.0" fitWidth="358.0" layoutY="-5.0" pickOnBounds="true" preserveRatio="true">
+                        <ImageView fitHeight="506.0" fitWidth="407.0" layoutY="-5.0" pickOnBounds="true" preserveRatio="true">
                             <image>
                                 <Image url="@../image/loginPageImage.png" />
                             </image>
@@ -33,27 +33,37 @@
                     </children></AnchorPane>
             </left>
             <center>
-                <AnchorPane prefHeight="512.0" prefWidth="350.0" BorderPane.alignment="CENTER">
+                <AnchorPane prefHeight="501.0" prefWidth="404.0" style="-fx-background-color: rgb(255,255,255,0.0);" BorderPane.alignment="CENTER">
                     <children>
-                        <Text fill="#4d5254" layoutX="143.0" layoutY="182.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Login">
+                        <Text fill="#4d5254" layoutX="191.0" layoutY="182.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Login">
                             <font>
-                                <Font name="Caladea" size="23.0" />
+                                <Font name="Caladea" size="24.0" />
                             </font>
                         </Text>
-                        <TextField fx:id="uNameText" layoutX="103.0" layoutY="250.0" promptText="User Name" style="-fx-background-color: transpanent; -fx-border-color: #4d5254; -fx-border-width: 0px 0px 2px 0px;" />
-                        <Button layoutX="158.0" layoutY="396.0" mnemonicParsing="false" onAction="#logBtn" style="-fx-background-color: #4d5254;" text="Login" textFill="#f8f8f8">
+                        <TextField fx:id="uNameText" layoutX="112.0" layoutY="250.0" prefHeight="26.0" prefWidth="250.0" promptText="User Name" style="-fx-background-color: transpanent; -fx-border-color: #4d5254; -fx-border-width: 0px 0px 2px 0px;" />
+                        <Button layoutX="154.0" layoutY="396.0" mnemonicParsing="false" onAction="#logBtn" prefHeight="24.0" prefWidth="159.0" style="-fx-background-color: #4d5254;" text="Login" textFill="#f8f8f8">
                             <cursor>
                                 <Cursor fx:constant="HAND" />
                             </cursor>
                             <font>
                                 <Font name="System Bold" size="13.0" />
                             </font></Button>
-                        <PasswordField fx:id="uPassText" layoutX="103.0" layoutY="309.0" promptText="Pasword" style="-fx-background-color: transpanent; -fx-border-color: #4d5254; -fx-border-width: 0px 0px 2px 0px;" />
-                        <ImageView fitHeight="176.0" fitWidth="174.0" layoutX="84.0" layoutY="14.0" pickOnBounds="true" preserveRatio="true">
+                        <ImageView fitHeight="176.0" fitWidth="174.0" layoutX="131.0" layoutY="-1.0" pickOnBounds="true" preserveRatio="true">
                             <image>
                                 <Image url="@../image/ZenVeuse/logoBlack.png" />
                             </image>
                         </ImageView>
+                  <ImageView fitHeight="18.0" fitWidth="18.0" layoutX="340.0" layoutY="312.0">
+                     <image>
+                        <Image url="@../image/icons/eye.png" />
+                     </image>
+                  </ImageView>
+                  <TextField fx:id="uPassVisibleText" layoutX="112.0" layoutY="309.0" prefHeight="24.0" prefWidth="250.0" style="-fx-background-color: transpanent; -fx-border-color: #4d5254; -fx-border-width: 0px 0px 2px 0px;" />
+                        <PasswordField fx:id="uPassText" layoutX="112.0" layoutY="309.0" prefWidth="250.0" promptText="Pasword" style="-fx-background-color: transpanent; -fx-border-color: #4d5254; -fx-border-width: 0px 0px 2px 0px;" />
+                  <Button layoutX="338.0" layoutY="309.0" mnemonicParsing="false" onAction="#passwordShowBtn" prefHeight="22.0" prefWidth="22.0" style="-fx-background-color: transpanent;">
+                     <cursor>
+                        <Cursor fx:constant="HAND" />
+                     </cursor></Button>
                         <!--                  <Icon content="PERSON" layoutX="73.0" layoutY="252.0" />-->
                         <!--                  <Icon content="FIBER_PIN" layoutX="73.0" layoutY="324.0" />-->
                     </children></AnchorPane>
