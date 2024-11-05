@@ -12,215 +12,137 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane prefHeight="630.0" prefWidth="1065.0"
-            style="-fx-background-color: transpanent; -fx-background-radius: 20px;" xmlns="http://javafx.com/javafx/21"
-            xmlns:fx="http://javafx.com/fxml/1"
-            fx:controller="com.zenveus.the_culinary_academy.controllers.StudentController">
-   <AnchorPane layoutX="5.0" layoutY="5.0" prefHeight="620.0" prefWidth="1055.0"
-               style="-fx-background-color: rgba(0, 0, 0, 0.0); -fx-background-radius: 30px;">
-      <TableView layoutX="25.0" layoutY="277.0" prefHeight="325.0" prefWidth="712.0"
-                 style="-fx-background-color: transpanent; -fx-border-color: rgba(0, 0, 0, 0.4); -fx-border-width: 1px; -fx-border-radius: 5px; -fx-background-radius: 5px;">
+<AnchorPane prefHeight="630.0" prefWidth="1065.0" style="-fx-background-color: transpanent; -fx-background-radius: 20px;" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.zenveus.the_culinary_academy.controllers.StudentController">
+   <AnchorPane layoutX="5.0" layoutY="5.0" prefHeight="620.0" prefWidth="1055.0" style="-fx-background-color: rgba(0, 0, 0, 0.0); -fx-background-radius: 30px;">
+      <TableView fx:id="studentTable" layoutX="25.0" layoutY="277.0" prefHeight="325.0" prefWidth="712.0" onMouseClicked="#rowClick"  style="-fx-background-color: transpanent; -fx-border-color: rgba(0, 0, 0, 0.4); -fx-border-width: 1px; -fx-border-radius: 5px; -fx-background-radius: 5px;">
          <columns>
-            <TableColumn prefWidth="44.0"
-                         style="-fx-background-color: white; -fx-border-color: transparent transparent black transparent; -fx-border-width: 0 0 1px 0;"
-                         text="ID"/>
-            <TableColumn prefWidth="108.0"
-                         style="-fx-background-color: white; -fx-border-color: transparent transparent black transparent; -fx-border-width: 0 0 1px 0;"
-                         text="Name"/>
-            <TableColumn prefWidth="104.0"
-                         style="-fx-background-color: white; -fx-border-color: transparent transparent black transparent; -fx-border-width: 0 0 1px 0;"
-                         text="NIC"/>
-            <TableColumn prefWidth="44.0"
-                         style="-fx-background-color: white; -fx-border-color: transparent transparent black transparent; -fx-border-width: 0 0 1px 0;"
-                         text="Age"/>
-            <TableColumn minWidth="9.666656494140625" prefWidth="135.0"
-                         style="-fx-background-color: white; -fx-border-color: transparent transparent black transparent; -fx-border-width: 0 0 1px 0;"
-                         text="Email"/>
-            <TableColumn prefWidth="92.0"
-                         style="-fx-background-color: white; -fx-border-color: transparent transparent black transparent; -fx-border-width: 0 0 1px 0;"
-                         text="Phone"/>
-            <TableColumn prefWidth="79.0"
-                         style="-fx-background-color: white; -fx-border-color: transparent transparent black transparent; -fx-border-width: 0 0 1px 0;"
-                         text="Address"/>
-            <TableColumn prefWidth="103.0"
-                         style="-fx-background-color: white; -fx-border-color: transparent transparent black transparent; -fx-border-width: 0 0 1px 0;"
-                         text="Action"/>
+            <TableColumn fx:id="colStuId" prefWidth="44.0" style="-fx-background-color: white; -fx-border-color: transparent transparent black transparent; -fx-border-width: 0 0 1px 0;" text="ID" />
+            <TableColumn fx:id="colStuName" prefWidth="108.0" style="-fx-background-color: white; -fx-border-color: transparent transparent black transparent; -fx-border-width: 0 0 1px 0;" text="Name" />
+            <TableColumn fx:id="colStuNic" prefWidth="104.0" style="-fx-background-color: white; -fx-border-color: transparent transparent black transparent; -fx-border-width: 0 0 1px 0;" text="NIC" />
+            <TableColumn fx:id="colStuAge" prefWidth="44.0" style="-fx-background-color: white; -fx-border-color: transparent transparent black transparent; -fx-border-width: 0 0 1px 0;" text="Age" />
+            <TableColumn fx:id="colStuEmail" minWidth="9.666656494140625" prefWidth="135.0" style="-fx-background-color: white; -fx-border-color: transparent transparent black transparent; -fx-border-width: 0 0 1px 0;" text="Email" />
+            <TableColumn fx:id="colStuPhone" prefWidth="92.0" style="-fx-background-color: white; -fx-border-color: transparent transparent black transparent; -fx-border-width: 0 0 1px 0;" text="Phone" />
+            <TableColumn fx:id="colStuAddress" prefWidth="79.0" style="-fx-background-color: white; -fx-border-color: transparent transparent black transparent; -fx-border-width: 0 0 1px 0;" text="Address" />
+            <TableColumn prefWidth="103.0" style="-fx-background-color: white; -fx-border-color: transparent transparent black transparent; -fx-border-width: 0 0 1px 0;" text="Action" />
          </columns>
       </TableView>
-      <AnchorPane layoutX="15.0" layoutY="96.0" prefHeight="160.0" prefWidth="743.0"
-                  style="-fx-background-color: rgba(255, 255, 255, 0.3); -fx-background-radius: 30px;">
+      <AnchorPane layoutX="15.0" layoutY="96.0" prefHeight="160.0" prefWidth="743.0" style="-fx-background-color: rgba(255, 255, 255, 0.3); -fx-background-radius: 30px;">
          <Text fill="WHITE" layoutX="18.0" layoutY="32.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Student">
             <font>
-               <Font name="System Bold" size="24.0"/>
+               <Font name="System Bold" size="24.0" />
             </font>
          </Text>
-         <AnchorPane layoutX="234.0" layoutY="9.0" prefHeight="142.0" prefWidth="2.0"
-                     style="-fx-background-color: rgb(0,0,0,0.4);"/>
-         <AnchorPane layoutX="529.0" layoutY="9.0" prefHeight="142.0" prefWidth="2.0"
-                     style="-fx-background-color: rgb(0,0,0,0.4);"/>
+         <AnchorPane layoutX="234.0" layoutY="9.0" prefHeight="142.0" prefWidth="2.0" style="-fx-background-color: rgb(0,0,0,0.4);" />
+         <AnchorPane layoutX="529.0" layoutY="9.0" prefHeight="142.0" prefWidth="2.0" style="-fx-background-color: rgb(0,0,0,0.4);" />
       </AnchorPane>
-      <AnchorPane layoutX="769.0" layoutY="96.0" prefHeight="301.0" prefWidth="270.0"
-                  style="-fx-background-color: rgba(255, 255, 255, 0.3); -fx-background-radius: 30px;"/>
-      <AnchorPane layoutX="769.0" layoutY="408.0" prefHeight="194.0" prefWidth="270.0"
-                  style="-fx-background-color: rgba(255, 255, 255, 0.3); -fx-background-radius: 30px;"/>
-      <VBox layoutX="-2.0" prefHeight="624.0" prefWidth="1055.0">
-         <AnchorPane fx:id="reportMainAnchor" layoutX="10.0" maxWidth="1055.0" minWidth="1027.0"
-                     prefHeight="616.0" prefWidth="1055.0">
-            <AnchorPane layoutX="17.0" layoutY="87.0" prefHeight="528.0" prefWidth="1044.0"
-                        style="-fx-background-color: white; -fx-background-radius: 30px 0px 00px 30px;"
-            >
-               <TextField fx:id="studentIDField" layoutX="18.0" layoutY="99.0" prefHeight="45.0"
-                          prefWidth="210.0" promptText="Student Id"
-                          style="-fx-border-radius: 5px; -fx-border-color: rgb(0,0,0,0.4);"/>
-               <Text fill="#0000009d" layoutX="20.0" layoutY="94.0" strokeType="OUTSIDE" strokeWidth="0.0"
-                     text="Student ID">
+      <AnchorPane layoutX="769.0" layoutY="96.0" prefHeight="301.0" prefWidth="270.0" style="-fx-background-color: rgba(255, 255, 255, 0.3); -fx-background-radius: 30px;" />
+      <AnchorPane layoutX="769.0" layoutY="408.0" prefHeight="194.0" prefWidth="270.0" style="-fx-background-color: rgba(255, 255, 255, 0.3); -fx-background-radius: 30px;" />
+      <VBox layoutX="165.0" prefHeight="624.0" prefWidth="885.0">
+         <AnchorPane fx:id="reportMainAnchor" layoutX="10.0" maxWidth="1055.0" minWidth="890.0" prefHeight="616.0" prefWidth="890.0">
+            <AnchorPane layoutX="17.0" layoutY="87.0" prefHeight="528.0" prefWidth="871.0" style="-fx-background-color: white; -fx-background-radius: 30px 0px 00px 30px;">
+               <TextField fx:id="studentIDField" layoutX="15.0" layoutY="99.0" prefHeight="45.0" prefWidth="190.0" promptText="Student Id" style="-fx-border-radius: 5px; -fx-border-color: rgb(0,0,0,0.4);" />
+               <Text fill="#0000009d" layoutX="17.0" layoutY="94.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Student ID">
                   <font>
-                     <Font name="Noto Looped Lao ExtraBold" size="12.0"/>
+                     <Font name="Noto Looped Lao ExtraBold" size="12.0" />
                   </font>
                </Text>
-               <TextField fx:id="studentEmailField" layoutX="19.0" layoutY="409.0" prefHeight="45.0"
-                          prefWidth="210.0" promptText="Email"
-                          style="-fx-border-radius: 5px; -fx-border-color: rgb(0,0,0,0.4);"/>
-               <Text fill="#0000009d" layoutX="21.0" layoutY="404.0" strokeType="OUTSIDE" strokeWidth="0.0"
-                     text="Email">
+               <TextField fx:id="studentEmailField" layoutX="16.0" layoutY="409.0" minWidth="190.0" prefHeight="45.0" prefWidth="190.0" promptText="Email" style="-fx-border-radius: 5px; -fx-border-color: rgb(0,0,0,0.4);" />
+               <Text fill="#0000009d" layoutX="18.0" layoutY="404.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Email">
                   <font>
-                     <Font name="Noto Looped Lao ExtraBold" size="12.0"/>
+                     <Font name="Noto Looped Lao ExtraBold" size="12.0" />
                   </font>
                </Text>
-               <TextField fx:id="studentNameField" layoutX="19.0" layoutY="250.0" prefHeight="45.0"
-                          prefWidth="444.0" promptText="Full Name"
-                          style="-fx-border-radius: 5px; -fx-border-color: rgb(0,0,0,0.4);"/>
-               <Text fill="#0000009d" layoutX="21.0" layoutY="245.0" strokeType="OUTSIDE" strokeWidth="0.0"
-                     text="Full Name">
+               <TextField fx:id="studentNameField" layoutX="15.0" layoutY="250.0" prefHeight="45.0" prefWidth="389.0" promptText="Full Name" style="-fx-border-radius: 5px; -fx-border-color: rgb(0,0,0,0.4);" />
+               <Text fill="#0000009d" layoutX="20.0" layoutY="245.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Full Name">
                   <font>
-                     <Font name="Noto Looped Lao ExtraBold" size="12.0"/>
+                     <Font name="Noto Looped Lao ExtraBold" size="12.0" />
                   </font>
                </Text>
-               <TextField fx:id="studentNICField" layoutX="19.0" layoutY="172.0" prefHeight="45.0"
-                          prefWidth="210.0" promptText="Student NIC"
-                          style="-fx-border-radius: 5px; -fx-border-color: rgb(0,0,0,0.4);"/>
-               <Text fill="#0000009d" layoutX="21.0" layoutY="167.0" strokeType="OUTSIDE" strokeWidth="0.0"
-                     text="Student NIC">
+               <TextField fx:id="studentNICField" layoutX="16.0" layoutY="172.0" minWidth="190.0" prefHeight="45.0" prefWidth="190.0" promptText="Student NIC" style="-fx-border-radius: 5px; -fx-border-color: rgb(0,0,0,0.4);" />
+               <Text fill="#0000009d" layoutX="18.0" layoutY="167.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Student NIC">
                   <font>
-                     <Font name="Noto Looped Lao ExtraBold" size="12.0"/>
+                     <Font name="Noto Looped Lao ExtraBold" size="12.0" />
                   </font>
                </Text>
-               <TextField fx:id="studentPhoneField" layoutX="252.0" layoutY="409.0" prefHeight="45.0"
-                          prefWidth="210.0" promptText="Phone"
-                          style="-fx-border-radius: 5px; -fx-border-color: rgb(0,0,0,0.4);"/>
-               <Text fill="#0000009d" layoutX="255.0" layoutY="404.0" strokeType="OUTSIDE" strokeWidth="0.0"
-                     text="Phone">
+               <TextField fx:id="studentPhoneField" layoutX="213.0" layoutY="409.0" minWidth="190.0" prefHeight="45.0" prefWidth="190.0" promptText="Phone" style="-fx-border-radius: 5px; -fx-border-color: rgb(0,0,0,0.4);" />
+               <Text fill="#0000009d" layoutX="216.0" layoutY="404.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Phone">
                   <font>
-                     <Font name="Noto Looped Lao ExtraBold" size="12.0"/>
+                     <Font name="Noto Looped Lao ExtraBold" size="12.0" />
                   </font>
                </Text>
-               <AnchorPane layoutX="42.0" layoutY="9.0" prefHeight="50.0" prefWidth="1000.0"
-                           style="-fx-background-color: rgb(0,0,0,0.4); -fx-background-radius: 30px 0px 0px 30px;">
-                  <Text fx:id="sidePaneTitle" fill="WHITE" layoutX="27.0" layoutY="31.0"
-                        strokeType="OUTSIDE" strokeWidth="0.0" text="Register Student">
+               <AnchorPane layoutX="42.0" layoutY="9.0" prefHeight="50.0" prefWidth="831.0" style="-fx-background-color: rgb(0,0,0,0.4); -fx-background-radius: 30px 0px 0px 30px;">
+                  <Text fx:id="sidePaneTitle" fill="WHITE" layoutX="27.0" layoutY="31.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Register Student">
                      <font>
-                        <Font name="Khmer OS System" size="18.0"/>
+                        <Font name="Khmer OS System" size="18.0" />
                      </font>
                   </Text>
                </AnchorPane>
-               <DatePicker fx:id="studentDOBField" layoutX="252.0" layoutY="172.0" minHeight="45.0"
-                           minWidth="210.0" promptText="2024/10/10"
-                           style="-fx-border-color: rgb(0,0,0,0.4); -fx-border-radius: 5px;"/>
-               <Text fill="#0000009d" layoutX="263.0" layoutY="168.0" strokeType="OUTSIDE" strokeWidth="0.0"
-                     text="Brithday">
+               <DatePicker fx:id="studentDOBField" layoutX="213.0" layoutY="172.0" minHeight="45.0" minWidth="190.0" prefWidth="190.0" promptText="2024/10/10" style="-fx-border-color: rgb(0,0,0,0.4); -fx-border-radius: 5px;" />
+               <Text fill="#0000009d" layoutX="224.0" layoutY="168.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Brithday">
                   <font>
-                     <Font name="Noto Looped Lao ExtraBold" size="12.0"/>
+                     <Font name="Noto Looped Lao ExtraBold" size="12.0" />
                   </font>
                </Text>
-               <TextField fx:id="studentAddressField" layoutX="19.0" layoutY="329.0" prefHeight="45.0"
-                          prefWidth="444.0" promptText="Address"
-                          style="-fx-border-radius: 5px; -fx-border-color: rgb(0,0,0,0.4);"/>
-               <Text fill="#0000009d" layoutX="21.0" layoutY="324.0" strokeType="OUTSIDE" strokeWidth="0.0"
-                     text="Address">
+               <TextField fx:id="studentAddressField" layoutX="15.0" layoutY="329.0" prefHeight="45.0" prefWidth="389.0" promptText="Address" style="-fx-border-radius: 5px; -fx-border-color: rgb(0,0,0,0.4);" />
+               <Text fill="#0000009d" layoutX="20.0" layoutY="324.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Address">
                   <font>
-                     <Font name="Noto Looped Lao ExtraBold" size="12.0"/>
+                     <Font name="Noto Looped Lao ExtraBold" size="12.0" />
                   </font>
                </Text>
-               <AnchorPane layoutX="759.0" layoutY="184.0" prefHeight="200.0" prefWidth="2.0"
-                           style="-fx-background-color: rgb(0,0,0,0.4);"/>
-               <Button layoutX="19.0" layoutY="478.0" mnemonicParsing="false" onAction="#studentDeleteBtn"
-                       prefHeight="35.0" prefWidth="87.0"
-                       style="-fx-background-color: red; -fx-background-radius: 50px;" text="Delete"
-                       textFill="WHITE">
+               <AnchorPane layoutX="639.0" layoutY="184.0" prefHeight="200.0" prefWidth="2.0" style="-fx-background-color: rgb(0,0,0,0.4);" />
+               <Button layoutX="22.0" layoutY="478.0" mnemonicParsing="false" onAction="#studentDeleteBtn" prefHeight="35.0" prefWidth="87.0" style="-fx-background-color: red; -fx-background-radius: 50px;" text="Delete" textFill="WHITE">
                   <font>
-                     <Font name="System Bold" size="14.0"/>
+                     <Font name="System Bold" size="14.0" />
                   </font>
                </Button>
-               <Button layoutX="909.0" layoutY="477.0" mnemonicParsing="false" onAction="#studentSaveBtn"
-                       prefHeight="35.0" prefWidth="87.0"
-                       style="-fx-background-color: transpanent; -fx-background-radius: 50px; -fx-border-color: green; -fx-border-radius: 50%;"
-                       text="Save">
+               <Button layoutX="766.0" layoutY="477.0" mnemonicParsing="false" onAction="#studentSaveBtn" prefHeight="35.0" prefWidth="87.0" style="-fx-background-color: transpanent; -fx-background-radius: 50px; -fx-border-color: green; -fx-border-radius: 50%;" text="Save">
                   <font>
-                     <Font name="System Bold" size="14.0"/>
+                     <Font name="System Bold" size="14.0" />
                   </font>
                </Button>
-               <Button layoutX="811.0" layoutY="477.0" mnemonicParsing="false" onAction="#studentUpdateBtn"
-                       prefHeight="35.0" prefWidth="87.0"
-                       style="-fx-background-color: transpanent; -fx-background-radius: 50px; -fx-border-color: yellow; -fx-border-radius: 50%;"
-                       text="Update">
+               <Button layoutX="668.0" layoutY="477.0" mnemonicParsing="false" onAction="#studentUpdateBtn" prefHeight="35.0" prefWidth="87.0" style="-fx-background-color: transpanent; -fx-background-radius: 50px; -fx-border-color: yellow; -fx-border-radius: 50%;" text="Update">
                   <font>
-                     <Font name="System Bold" size="14.0"/>
+                     <Font name="System Bold" size="14.0" />
                   </font>
                </Button>
-               <AnchorPane layoutX="490.0" layoutY="95.0" prefHeight="384.0" prefWidth="250.0"
-                           style="-fx-background-color: rgb(0,0,0,0.2); -fx-background-radius: 10px;">
-                  <Text layoutX="11.0" layoutY="21.0" strokeType="OUTSIDE" strokeWidth="0.0"
-                        text="Program">
+               <AnchorPane layoutX="412.0" layoutY="95.0" prefHeight="384.0" prefWidth="220.0" style="-fx-background-color: rgb(0,0,0,0.2); -fx-background-radius: 10px;">
+                  <Text layoutX="11.0" layoutY="21.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Program">
                      <font>
-                        <Font name="Khmer OS System" size="14.0"/>
+                        <Font name="Khmer OS System" size="14.0" />
                      </font>
                   </Text>
                </AnchorPane>
-               <AnchorPane layoutX="778.0" layoutY="96.0" prefHeight="357.0" prefWidth="250.0"
-                           style="-fx-background-color: rgb(0,0,0,0.2); -fx-background-radius: 10px;">
-                  <Text layoutX="10.0" layoutY="22.0" strokeType="OUTSIDE" strokeWidth="0.0"
-                        text="Payment">
+               <AnchorPane layoutX="648.0" layoutY="96.0" prefHeight="357.0" prefWidth="220.0" style="-fx-background-color: rgb(0,0,0,0.2); -fx-background-radius: 10px;">
+                  <Text layoutX="10.0" layoutY="22.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Payment">
                      <font>
-                        <Font name="Khmer OS System" size="14.0"/>
+                        <Font name="Khmer OS System" size="14.0" />
                      </font>
                   </Text>
                </AnchorPane>
-               <AnchorPane layoutX="-12.0" layoutY="216.0" prefHeight="24.0" prefWidth="31.0"
-                           style="-fx-background-color: white; -fx-background-radius: 10px;">
-                  <ImageView fx:id="reportLeftRightImage" fitHeight="20.0" fitWidth="20.0"
-                             layoutX="-2.0" layoutY="2.0">
-                     <Image url="@../../../../../../../../newZips/NewManazinePrison/src/main/resources/images/icon/leftArrowIcon.png"/>
+               <AnchorPane layoutX="-12.0" layoutY="216.0" prefHeight="24.0" prefWidth="31.0" style="-fx-background-color: white; -fx-background-radius: 10px;">
+                  <ImageView fx:id="reportLeftRightImage" fitHeight="20.0" fitWidth="20.0" layoutX="-2.0" layoutY="2.0">
+                     <Image url="@../../../../../../../../newZips/NewManazinePrison/src/main/resources/images/icon/leftArrowIcon.png" />
                   </ImageView>
-                  <Button layoutX="-1.0" layoutY="2.0" mnemonicParsing="false"
-                          onAction="#reportPaneShowHideBtn" prefHeight="24.0" prefWidth="28.0"
-                          style="-fx-background-color: transpanent;"/>
+                  <Button layoutX="-1.0" layoutY="2.0" mnemonicParsing="false" onAction="#reportPaneShowHideBtn" prefHeight="24.0" prefWidth="28.0" style="-fx-background-color: transpanent;" />
                </AnchorPane>
             </AnchorPane>
          </AnchorPane>
       </VBox>
    </AnchorPane>
-   <AnchorPane layoutX="100.0" layoutY="19.0" prefHeight="45.0" prefWidth="865.0"
-               style="-fx-background-color: rgba(255, 255, 255, 0.3); -fx-background-radius: 50px;">
-      <Button layoutX="5.0" layoutY="4.0" minHeight="35.0" minWidth="35.0" mnemonicParsing="false"
-              onAction="#studentBackBtn"
-              style="-fx-background-color: rgba(0, 0, 0, 0.3); -fx-background-radius: 50%;"/>
+   <AnchorPane layoutX="100.0" layoutY="19.0" prefHeight="45.0" prefWidth="865.0" style="-fx-background-color: rgba(255, 255, 255, 0.3); -fx-background-radius: 50px;">
+      <Button layoutX="5.0" layoutY="4.0" minHeight="35.0" minWidth="35.0" mnemonicParsing="false" onAction="#studentBackBtn" style="-fx-background-color: rgba(0, 0, 0, 0.3); -fx-background-radius: 50%;" />
       <ImageView fitHeight="20.0" fitWidth="20.0" layoutX="12.0" layoutY="12.0">
-         <Image url="@../image/icons/leftArow.png"/>
+         <Image url="@../image/icons/leftArow.png" />
       </ImageView>
-      <AnchorPane layoutX="281.0" layoutY="5.0" prefHeight="35.0" prefWidth="494.0"
-                  style="-fx-background-color: rgba(0, 0, 0, 0.3) rgba(0, 0, 0, 0.3); -fx-background-radius: 50px;">
-         <TextField fx:id="searchStudent" layoutX="31.0" layoutY="2.0" minHeight="30.0" minWidth="300.0"
-                    onAction="#searchStudentClick" prefHeight="30.0" prefWidth="444.0" promptText="Search Student"
-                    style="-fx-background-color: transpanent;"/>
+      <AnchorPane layoutX="281.0" layoutY="5.0" prefHeight="35.0" prefWidth="494.0" style="-fx-background-color: rgba(0, 0, 0, 0.3) rgba(0, 0, 0, 0.3); -fx-background-radius: 50px;">
+         <TextField fx:id="searchStudent" layoutX="31.0" layoutY="2.0" minHeight="30.0" minWidth="300.0" onAction="#searchStudentClick" prefHeight="30.0" prefWidth="444.0" promptText="Search Student" style="-fx-background-color: transpanent;" />
          <ImageView fitHeight="20.0" fitWidth="20.0" layoutX="7.0" layoutY="8.0">
-            <Image url="@../image/icons/search-icon.png"/>
+            <Image url="@../image/icons/search-icon.png" />
          </ImageView>
       </AnchorPane>
-      <Button layoutX="788.0" layoutY="4.0" minHeight="35.0" minWidth="35.0" mnemonicParsing="false"
-              onAction="#searchStudentClearBtn" prefHeight="35.0" prefWidth="72.0"
-              style="-fx-background-color: rgba(0, 0, 0, 0.3); -fx-background-radius: 30px;"/>
+      <Button layoutX="788.0" layoutY="4.0" minHeight="35.0" minWidth="35.0" mnemonicParsing="false" onAction="#searchStudentClearBtn" prefHeight="35.0" prefWidth="72.0" style="-fx-background-color: rgba(0, 0, 0, 0.3); -fx-background-radius: 30px;" />
       <ImageView fitHeight="20.0" fitWidth="20.0" layoutX="816.0" layoutY="12.0">
-         <Image url="@../image/icons/cloce.png"/>
+         <Image url="@../image/icons/cloce.png" />
       </ImageView>
    </AnchorPane>
 </AnchorPane>

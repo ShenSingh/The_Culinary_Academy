@@ -1,12 +1,16 @@
 package com.zenveus.the_culinary_academy.controllers;
 
+import com.zenveus.the_culinary_academy.tm.StudentTm;
 import javafx.animation.TranslateTransition;
 import javafx.event.ActionEvent;
 import javafx.fxml.Initializable;
 import javafx.scene.control.DatePicker;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.text.Text;
 import javafx.util.Duration;
@@ -33,6 +37,18 @@ public class StudentController implements Initializable {
     // Student Side Pane Title
     public Text sidePaneTitle;
 
+    // table
+    public TableView<StudentTm> studentTable;
+
+    // collumn
+    public TableColumn<?,?> colStuId;
+    public TableColumn<?,?> colStuName;
+    public TableColumn<?,?> colStuNic;
+    public TableColumn<?,?> colStuAge;
+    public TableColumn<?,?> colStuEmail;
+    public TableColumn<?,?> colStuPhone;
+    public TableColumn<?,?> colStuAddress;
+
     private TranslateTransition sideTransition;
     private boolean isShow = false;
 
@@ -44,7 +60,7 @@ public class StudentController implements Initializable {
     private void setTransition() {
         sideTransition = new TranslateTransition(Duration.seconds(1.5), reportMainAnchor);
         sideTransition.setFromX(0);
-        sideTransition.setToX(1055); // Set initial `toX` based on `isShow`
+        sideTransition.setToX(890); // Set initial `toX` based on `isShow`
         updateIcon();
     }
 
@@ -59,7 +75,7 @@ public class StudentController implements Initializable {
     public void reportPaneShowHideBtn(ActionEvent actionEvent) {
         isShow = !isShow;
         sideTransition.setDuration(Duration.seconds(isShow ? 1.5 : 2));
-        sideTransition.setToX(isShow ? 1055 : 0);
+        sideTransition.setToX(isShow ? 890 : 0);
         updateIcon();
         sideTransition.play();
     }
@@ -91,5 +107,9 @@ public class StudentController implements Initializable {
     // student update btn
     public void studentUpdateBtn(ActionEvent actionEvent) {
         System.out.println("click student update Btn");
+    }
+
+    public void rowClick(MouseEvent mouseEvent) {
+        System.out.println("click row");
     }
 }
