@@ -1,5 +1,4 @@
 module com.zenveus.the_culinary_academy {
-    requires javafx.controls;
     requires javafx.fxml;
 
     requires org.controlsfx.controls;
@@ -7,6 +6,7 @@ module com.zenveus.the_culinary_academy {
     requires jakarta.persistence;
     requires static lombok;
     requires java.naming;
+    requires com.jfoenix;
 
 
     opens com.zenveus.the_culinary_academy to javafx.fxml;

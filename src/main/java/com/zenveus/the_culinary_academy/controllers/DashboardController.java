@@ -10,6 +10,8 @@ import javafx.scene.Scene;
 import javafx.scene.chart.LineChart;
 import javafx.scene.chart.PieChart;
 import javafx.scene.chart.XYChart;
+import javafx.scene.control.Button;
+import javafx.scene.control.Tooltip;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
@@ -31,11 +33,41 @@ public class DashboardController  implements Initializable {
 
     public PieChart studentPieChart;
     public PieChart programPieChart;
+    public Text wellcomeText;
+    public Text date;
+
+    public Button dashboardBtn;
+    public Button studentBtn;
+    public Button employeeBtn;
+    public Button programBtn;
+    public Button myAccountBtn;
 
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+        setWellcomeAndDate();
         setChartData();
+        setCounts();
+        setToolTip();
+    }
+
+    private void setToolTip() {
+        Tooltip.install(dashboardBtn,new Tooltip("Dashboard"));
+        Tooltip.install(studentBtn, new Tooltip("Student"));
+        Tooltip.install(employeeBtn, new Tooltip("Employee"));
+        Tooltip.install(programBtn, new Tooltip("Program"));
+        Tooltip.install(myAccountBtn, new Tooltip("My Account"));
+    }
+
+    private void setWellcomeAndDate() {
+        wellcomeText.setText("Welcome, Admin");
+        date.setText("Today is " + java.time.LocalDate.now());
+    }
+
+    private void setCounts() {
+        programCount.setText("5 Programs");
+        studentCount.setText("100 Students");
+        codinatorCount.setText("10 Coordinators");
     }
 
     private void setChartData() {
@@ -57,9 +89,7 @@ public class DashboardController  implements Initializable {
         paymentSeries.getData().add(new XYChart.Data<>("November", 320));
         paymentSeries.getData().add(new XYChart.Data<>("December", 330));
 
-        // Add the series to the chart
         paymentLineChart.getData().add(paymentSeries);
-
 
 //        pie chart
         // Add demo data to the PieChart
@@ -69,11 +99,7 @@ public class DashboardController  implements Initializable {
         PieChart.Data courseD = new PieChart.Data("Course D", 15);
         PieChart.Data courseE = new PieChart.Data("Course E", 10);
 
-        // Add data to the PieChart
         studentPieChart.getData().addAll(courseA, courseB, courseC, courseD, courseE);
-
-
-
 
         // Add demo data to the PieChart
         PieChart.Data programA = new PieChart.Data("Culinary Arts", 40);
@@ -82,13 +108,9 @@ public class DashboardController  implements Initializable {
         PieChart.Data programD = new PieChart.Data("Hospitality Management", 10);
         PieChart.Data programE = new PieChart.Data("Nutrition", 10);
 
-        // Add data to the PieChart
         programPieChart.getData().addAll(programA, programB, programC, programD, programE);
-
-
     }
 
-    //
     public void logOutBtn(ActionEvent actionEvent) {
         System.out.println("LogOut");
     }

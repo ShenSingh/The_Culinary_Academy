@@ -3,12 +3,16 @@ package com.zenveus.the_culinary_academy.controllers;
 import com.zenveus.the_culinary_academy.bo.BOFactory;
 import com.zenveus.the_culinary_academy.bo.custom.UserBO;
 import com.zenveus.the_culinary_academy.dto.UserDTO;
+import com.zenveus.the_culinary_academy.tm.UserTm;
 import javafx.animation.TranslateTransition;
 import javafx.event.ActionEvent;
 import javafx.fxml.Initializable;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.text.Text;
 import javafx.util.Duration;
@@ -32,6 +36,14 @@ public class EmployeeController implements Initializable {
     public TextField searchEmployee;
     // Employee Side Pane Title
     public Text sidePaneTitle;
+    
+    // table view
+    public TableView<UserTm> userTable;
+    public TableColumn<?,?> colUsrId;
+    public TableColumn<?,?> colUsrName;
+    public TableColumn<?,?> colUsrEmail;
+    public TableColumn<?,?> colUsrPhone;
+    public TableColumn<?, ?> colUsrAddress;
 
     private TranslateTransition sideTransition;
     private boolean isShow = false;
@@ -123,5 +135,9 @@ public class EmployeeController implements Initializable {
     // employee update btn
     public void employeeUpdateBtn(ActionEvent actionEvent) {
         System.out.println("click employee update Btn");
+    }
+
+    public void rowClick(MouseEvent mouseEvent) {
+        System.out.println("click row");
     }
 }
