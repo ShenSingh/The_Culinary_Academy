@@ -1,5 +1,8 @@
 package com.zenveus.the_culinary_academy.controllers;
 
+import com.zenveus.the_culinary_academy.bo.BOFactory;
+import com.zenveus.the_culinary_academy.bo.custom.UserBO;
+import com.zenveus.the_culinary_academy.dto.UserDTO;
 import javafx.animation.TranslateTransition;
 import javafx.event.ActionEvent;
 import javafx.fxml.Initializable;
@@ -33,6 +36,9 @@ public class EmployeeController implements Initializable {
     private TranslateTransition sideTransition;
     private boolean isShow = false;
 
+    UserBO userBO = (UserBO) BOFactory.getBoFactory().getBO(BOFactory.BOTypes.USER);
+
+
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         setTransition();
@@ -62,6 +68,7 @@ public class EmployeeController implements Initializable {
         updateIcon();
         sideTransition.play();
     }
+
     //  employee back btn (search bar)
     public void employeeBackBtn(ActionEvent actionEvent) {
         System.out.println("click employee page back Btn");
@@ -84,6 +91,34 @@ public class EmployeeController implements Initializable {
     // employee save btn
     public void employeeSaveBtn(ActionEvent actionEvent) {
         System.out.println("click employee save Btn");
+
+        String employeeID = employeeIDField.getText();
+        String employeeEmail = employeeEmailField.getText();
+        String employeeName = employeeNameField.getText();
+        String employeePhone = employeePhoneField.getText();
+        String employeeAddress = employeeAddressField.getText();
+
+        UserDTO userDTO = new UserDTO();
+
+        userDTO.setFullName(employeeName);
+        userDTO.setEmail(employeeEmail);
+        userDTO.setPhoneNumber(employeePhone);
+        userDTO.setAddress(employeeAddress);
+
+        userDTO.setUsername("admin");
+        userDTO.setPassword("admin");
+
+        System.out.println(userDTO);
+
+        try {
+            boolean isAdded = userBO.addUser(userDTO);
+            System.out.println(isAdded);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+
+
     }
     // employee update btn
     public void employeeUpdateBtn(ActionEvent actionEvent) {
