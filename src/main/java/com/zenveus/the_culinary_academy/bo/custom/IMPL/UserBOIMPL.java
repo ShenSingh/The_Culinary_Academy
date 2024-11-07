@@ -47,7 +47,10 @@ public class UserBOIMPL implements UserBO {
     @Override
     public boolean updateUser(UserDTO userDto) {
         try {
+            System.out.println("update user : "+ userDto);
             userDAO.update(new User(userDto.getUserId(), userDto.getFullName(), userDto.getEmail(), userDto.getPhoneNumber(), userDto.getAddress(),userDto.getJobRole(), userDto.getUsername(), userDto.getPassword()));
+
+
         } catch (Exception e) {
             throw new RuntimeException(e);
         }

@@ -51,38 +51,38 @@ public class LoginController {
 
     @FXML
     private void logBtn(ActionEvent event) throws IOException {
-//        dashBord();
-        List<UserDTO> userDTOList = userBO.getAllUsers();
-
-
-
-        String uName=uNameText.getText();
-        String uPass=uPassText.getText();
-
-        for(UserDTO userDTO : userDTOList){
-            System.out.println(userDTO);
-
-            if (uName.equals(userDTO.getUsername())){
-
-                if (BCryptHasher.verifyPassword(uPass, userDTO.getPassword())){
-                    System.out.println("Go to dashBord");
-
-                    uNameText.clear();
-                    uPassText.clear();
-                    loginUser = userDTO;
-                    dashBord();
-                }else {
-                    System.out.println("not password");
-                    new Alert(Alert.AlertType.WARNING, "wrong User Password ");
-
-                }
-
-            }else {
-                System.out.println("not id");
-                new Alert(Alert.AlertType.WARNING, "wrong User ID ");
-
-            }
-        }
+        dashBord();
+//        List<UserDTO> userDTOList = userBO.getAllUsers();
+//
+//
+//
+//        String uName=uNameText.getText();
+//        String uPass=uPassText.getText();
+//
+//        for(UserDTO userDTO : userDTOList){
+//            System.out.println(userDTO);
+//
+//            if (uName.equals(userDTO.getUsername())){
+//
+//                if (BCryptHasher.verifyPassword(uPass, userDTO.getPassword())){
+//                    System.out.println("Go to dashBord");
+//
+//                    uNameText.clear();
+//                    uPassText.clear();
+//                    loginUser = userDTO;
+//                    dashBord();
+//                }else {
+//                    System.out.println("not password");
+//                    new Alert(Alert.AlertType.WARNING, "wrong User Password ");
+//
+//                }
+//
+//            }else {
+//                System.out.println("not id");
+//                new Alert(Alert.AlertType.WARNING, "wrong User ID ");
+//
+//            }
+//        }
 
     }
     void printAlert(String content){
