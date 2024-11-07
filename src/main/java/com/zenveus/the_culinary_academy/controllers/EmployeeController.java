@@ -410,6 +410,9 @@ public class EmployeeController implements Initializable {
                     selectUser = userDTO;
                 }
             }
+
+            sidePaneTitle.setText("Update User");
+
             employeeNameField.setText(selectedItem.getFullName());
             employeeEmailField.setText(selectedItem.getEmail());
             employeePhoneField.setText(selectedItem.getPhoneNumber());

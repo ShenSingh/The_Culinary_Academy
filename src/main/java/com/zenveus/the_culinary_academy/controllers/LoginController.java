@@ -12,11 +12,9 @@ import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
-import javafx.scene.effect.DropShadow;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
-import javafx.stage.StageStyle;
 
 import java.io.IOException;
 import java.util.List;
@@ -25,6 +23,7 @@ public class LoginController {
     public AnchorPane rootNode;
 
     static UserDTO loginUser;
+    static String userPassword;
 
     public static UserDTO getLoginUser() {
         return loginUser;
@@ -49,40 +48,49 @@ public class LoginController {
     @FXML
     private static Stage mainStage;
 
+    public static String getUserPassword() {
+        return userPassword;
+    }
+
+    public static void setUserPassword(String userPassword) {
+        LoginController.userPassword = userPassword;
+    }
+
     @FXML
     private void logBtn(ActionEvent event) throws IOException {
-        dashBord();
-//        List<UserDTO> userDTOList = userBO.getAllUsers();
-//
-//
-//
-//        String uName=uNameText.getText();
-//        String uPass=uPassText.getText();
-//
-//        for(UserDTO userDTO : userDTOList){
-//            System.out.println(userDTO);
-//
-//            if (uName.equals(userDTO.getUsername())){
-//
-//                if (BCryptHasher.verifyPassword(uPass, userDTO.getPassword())){
-//                    System.out.println("Go to dashBord");
-//
-//                    uNameText.clear();
-//                    uPassText.clear();
-//                    loginUser = userDTO;
-//                    dashBord();
-//                }else {
-//                    System.out.println("not password");
-//                    new Alert(Alert.AlertType.WARNING, "wrong User Password ");
-//
-//                }
-//
-//            }else {
-//                System.out.println("not id");
-//                new Alert(Alert.AlertType.WARNING, "wrong User ID ");
-//
-//            }
-//        }
+//        dashBord();
+        List<UserDTO> userDTOList = userBO.getAllUsers();
+
+
+
+        String uName=uNameText.getText();
+        String uPass=uPassText.getText();
+
+        for(UserDTO userDTO : userDTOList){
+            System.out.println(userDTO);
+
+            if (uName.equals(userDTO.getUsername())){
+
+                if (BCryptHasher.verifyPassword(uPass, userDTO.getPassword())){
+                    System.out.println("Go to dashBord");
+
+                    uNameText.clear();
+                    uPassText.clear();
+                    loginUser = userDTO;
+                    userPassword = uPass;
+                    dashBord();
+                }else {
+                    System.out.println("not password");
+                    new Alert(Alert.AlertType.WARNING, "wrong User Password ");
+
+                }
+
+            }else {
+                System.out.println("not id");
+                new Alert(Alert.AlertType.WARNING, "wrong User ID ");
+
+            }
+        }
 
     }
     void printAlert(String content){

@@ -8,11 +8,11 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane prefHeight="630.0" prefWidth="1065.0" style="-fx-background-color: transpanent; -fx-background-radius: 10;" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.zenveus.the_culinary_academy.controllers.MyAccountController">
+<AnchorPane prefHeight="630.0" prefWidth="1015.0" style="-fx-background-color: transpanent; -fx-background-radius: 10;" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.zenveus.the_culinary_academy.controllers.MyAccountController">
    <children>
-      <AnchorPane layoutX="5.0" layoutY="5.0" prefHeight="620.0" prefWidth="1055.0" style="-fx-background-color: rgb(0,0,0,0.0); -fx-background-radius: 30px;">
+      <AnchorPane layoutX="5.0" layoutY="5.0" prefHeight="620.0" prefWidth="1031.0" style="-fx-background-color: rgb(0,0,0,0.0); -fx-background-radius: 30px;">
          <children>
-            <AnchorPane layoutX="26.0" layoutY="21.0" prefHeight="576.0" prefWidth="260.0" style="-fx-background-color: rgb(0,0,0,0.2); -fx-background-radius: 30px;">
+            <AnchorPane layoutX="15.0" layoutY="11.0" prefHeight="596.0" prefWidth="260.0" style="-fx-background-color: rgb(255,255,255,0.2); -fx-background-radius: 30px;">
                <children>
                   <AnchorPane layoutX="72.0" layoutY="35.0" prefHeight="120.0" prefWidth="120.0" style="-fx-background-color: white; -fx-background-radius: 50%;">
                      <children>
@@ -21,7 +21,7 @@
                   </AnchorPane>
                </children>
             </AnchorPane>
-            <AnchorPane layoutX="306.0" layoutY="21.0" prefHeight="315.0" prefWidth="727.0" style="-fx-background-color: rgb(0,0,0,0.2); -fx-background-radius: 30px;">
+            <AnchorPane layoutX="295.0" layoutY="11.0" prefHeight="315.0" prefWidth="727.0" style="-fx-background-color: rgb(255,255,255,0.2); -fx-background-radius: 30px;">
                <Text layoutX="26.0" layoutY="28.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Profile Details">
                   <font>
                      <Font name="FreeSerif" size="21.0" />
@@ -63,14 +63,14 @@
                   </font>
                </Text>
             </AnchorPane>
-            <AnchorPane layoutX="306.0" layoutY="357.0" prefHeight="240.0" prefWidth="727.0" style="-fx-background-color: rgb(0,0,0,0.2); -fx-background-radius: 30px;">
+            <AnchorPane layoutX="295.0" layoutY="347.0" prefHeight="259.0" prefWidth="727.0" style="-fx-background-color: rgb(255,255,255,0.2); -fx-background-radius: 30px;">
                <Text layoutX="23.0" layoutY="31.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Security Details">
                   <font>
                      <Font name="FreeSerif" size="21.0" />
                   </font>
                </Text>
-               <TextField fx:id="secDesUserId" layoutX="44.0" layoutY="66.0" prefHeight="45.0" prefWidth="210.0" promptText="Email" style="-fx-border-radius: 5px; -fx-border-color: rgb(0,0,0,0.4); -fx-background-color: transpanent;" />
-               <Text fill="#0000009d" layoutX="46.0" layoutY="61.0" strokeType="OUTSIDE" strokeWidth="0.0" text="User ID">
+               <TextField fx:id="secDesUserName" layoutX="44.0" layoutY="66.0" prefHeight="45.0" prefWidth="210.0" promptText="user Name" style="-fx-border-radius: 5px; -fx-border-color: rgb(0,0,0,0.4); -fx-background-color: transpanent;" />
+               <Text fill="#0000009d" layoutX="46.0" layoutY="61.0" strokeType="OUTSIDE" strokeWidth="0.0" text="User Name">
                   <font>
                      <Font name="Noto Looped Lao ExtraBold" size="12.0" />
                   </font>
