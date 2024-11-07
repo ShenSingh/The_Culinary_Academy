@@ -1,5 +1,6 @@
 package com.zenveus.the_culinary_academy.controllers;
 
+import com.zenveus.the_culinary_academy.Launcher;
 import com.zenveus.the_culinary_academy.dto.UserDTO;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
@@ -18,6 +19,7 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 
 import java.io.IOException;
 import java.net.URL;
@@ -42,6 +44,8 @@ public class DashboardController  implements Initializable {
     public Button employeeBtn;
     public Button programBtn;
     public Button myAccountBtn;
+
+    Stage dashStage;
 
 
     @Override
@@ -140,6 +144,24 @@ public class DashboardController  implements Initializable {
 
     public void logOutBtn(ActionEvent actionEvent) {
         System.out.println("LogOut");
+        try {
+            Stage stage = new Stage();
+            FXMLLoader fxmlLoader = new FXMLLoader(Launcher.class.getResource("view/loginPage.fxml"));
+            Scene scene = new Scene(fxmlLoader.load(), Color.TRANSPARENT);
+            stage.setScene(scene);
+            stage.setResizable(false);
+            stage.initStyle(StageStyle.UNDECORATED);
+            stage.initStyle(StageStyle.TRANSPARENT);
+
+            dashStage = (Stage)mainContainer.getScene().getWindow();
+            dashStage.close();
+
+
+            stage.show();
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     public void dashboardBtn(ActionEvent actionEvent) throws IOException {
@@ -151,6 +173,7 @@ public class DashboardController  implements Initializable {
             Scene scene = new Scene(root, Color.TRANSPARENT);
 
             Stage stage = (Stage)this.mainContainer.getScene().getWindow();
+            dashStage = stage;
 
             stage.setScene(scene);
 
