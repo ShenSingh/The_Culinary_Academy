@@ -332,6 +332,7 @@ public class EmployeeController implements Initializable {
         updateUser.setEmail(employeeEmailField.getText());
         updateUser.setPhoneNumber(employeePhoneField.getText());
         updateUser.setAddress(employeeAddressField.getText());
+        updateUser.setJobRole(userJob.getValue());
 
         // Validation checks
         if (!Regex.isTextFieldValid(TextFields.EMAIL, updateUser.getEmail())) {
@@ -396,17 +397,29 @@ public class EmployeeController implements Initializable {
 
     public void rowClick(MouseEvent mouseEvent) {
         System.out.println("click row");
+
+        List<UserDTO> userDTOList = userBO.getAllUsers();
+        UserDTO selectUser = null;
+
         if (userTable.getSelectionModel().getSelectedItem() != null) {
             selectedItem = userTable.getSelectionModel().getSelectedItem();
             employeeIDField.setText(selectedItem.getUserId());
+
+            for (UserDTO userDTO : userDTOList){
+                if (userDTO.getUserId().equals(selectedItem.getUserId())){
+                    selectUser = userDTO;
+                }
+            }
             employeeNameField.setText(selectedItem.getFullName());
             employeeEmailField.setText(selectedItem.getEmail());
             employeePhoneField.setText(selectedItem.getPhoneNumber());
             employeeAddressField.setText(selectedItem.getAddress());
+            assert selectUser != null;
+            userJob.setValue(selectUser.getJobRole());
 
             if(isShow){
-                isShow = !isShow;
-                sideTransition.setDuration(Duration.seconds(isShow ? 1.5 : 2));
+                isShow = false;
+                sideTransition.setDuration(Duration.seconds(2));
                 sideTransition.setToX(isShow ? 550 : 0);
                 updateIcon();
                 sideTransition.play();
