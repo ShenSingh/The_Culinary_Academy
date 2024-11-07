@@ -43,7 +43,7 @@ public class UserDAOImpl implements UserDAO {
     }
 
     @Override
-    public Object search(User entity) throws Exception {
+    public Object search(String id) throws Exception {
         return null;
     }
 

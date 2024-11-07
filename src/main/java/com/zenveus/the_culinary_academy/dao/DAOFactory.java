@@ -1,5 +1,6 @@
 package com.zenveus.the_culinary_academy.dao;
 
+import com.zenveus.the_culinary_academy.dao.custom.impl.ProgramDAOImpl;
 import com.zenveus.the_culinary_academy.dao.custom.impl.UserDAOImpl;
 
 public class DAOFactory {
@@ -12,13 +13,15 @@ public class DAOFactory {
     }
 
     public enum DAOTypes{
-        USER
+        USER, PROGRAM
     }
 
     public SuperDAO getDAO(DAOTypes types){
         switch (types){
             case USER:
                 return new UserDAOImpl();
+            case PROGRAM:
+                return new ProgramDAOImpl();
             default:
                 return null;
         }

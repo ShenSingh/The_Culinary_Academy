@@ -5,8 +5,6 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.HashSet;
-import java.util.Set;
 
 
 @AllArgsConstructor
@@ -17,9 +15,8 @@ import java.util.Set;
 @Table(name = "program")
 public class Program {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "program_id")
-    private Long programId;
+    private String programId;
 
     @Column(name = "program_name", nullable = false)
     private String programName;
@@ -29,8 +26,5 @@ public class Program {
 
     @Column(name = "fee", nullable = false)
     private Double fee;
-
-    @OneToMany(mappedBy = "program", cascade = CascadeType.ALL)
-    private Set<StudentProgram> studentPrograms = new HashSet<>();
 
 }

@@ -1,5 +1,6 @@
 package com.zenveus.the_culinary_academy.bo;
 
+import com.zenveus.the_culinary_academy.bo.custom.IMPL.ProgramBOIMPL;
 import com.zenveus.the_culinary_academy.bo.custom.IMPL.UserBOIMPL;
 
 public class BOFactory {
@@ -12,13 +13,15 @@ public class BOFactory {
     }
 
     public enum BOTypes{
-        USER
+        USER, PROGRAM
     }
 
     public SuperBO getBO(BOTypes boTypes){
         switch (boTypes){
             case USER:
                 return new UserBOIMPL();
+            case PROGRAM:
+                return new ProgramBOIMPL();
 
             default:
                 return null;
