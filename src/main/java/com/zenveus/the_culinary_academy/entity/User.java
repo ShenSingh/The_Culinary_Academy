@@ -1,12 +1,11 @@
 package com.zenveus.the_culinary_academy.entity;
 
+import com.zenveus.the_culinary_academy.dto.UserDTO;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
-import java.util.HashSet;
-import java.util.Set;
+import org.mapstruct.Mapper;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -30,11 +29,13 @@ public class User {
     @Column(name = "address", nullable = false)
     private String address;
 
+    @Column(name = "job_role", nullable = false) // Leave this as is for database column mapping
+    private String jobRole; // Change variable to jobRole for consistency
+
     @Column(name = "username", unique = true, nullable = false)
     private String username;
 
     @Column(name = "password", nullable = false)
     private String password;
-
 }
 

@@ -7,6 +7,8 @@ module com.zenveus.the_culinary_academy {
     requires static lombok;
     requires java.naming;
     requires com.jfoenix;
+    requires spring.security.crypto;
+    requires org.mapstruct;
 
 
     opens com.zenveus.the_culinary_academy to javafx.fxml;

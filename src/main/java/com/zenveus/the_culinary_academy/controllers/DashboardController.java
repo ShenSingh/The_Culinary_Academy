@@ -1,5 +1,6 @@
 package com.zenveus.the_culinary_academy.controllers;
 
+import com.zenveus.the_culinary_academy.dto.UserDTO;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -10,6 +11,7 @@ import javafx.scene.Scene;
 import javafx.scene.chart.LineChart;
 import javafx.scene.chart.PieChart;
 import javafx.scene.chart.XYChart;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.Tooltip;
 import javafx.scene.layout.AnchorPane;
@@ -25,7 +27,6 @@ public class DashboardController  implements Initializable {
 
 
     public AnchorPane mainContainer;
-    public Text title;
     public LineChart<String, Number> paymentLineChart;
     public Text programCount;
     public Text studentCount;
@@ -49,6 +50,32 @@ public class DashboardController  implements Initializable {
         setChartData();
         setCounts();
         setToolTip();
+        getLoginUser();
+    }
+
+    private void getLoginUser() {
+        UserDTO userDTO = LoginController.getLoginUser();
+
+        if (userDTO != null){
+            if (userDTO.getJobRole().equals("Admin")){
+                wellcomeText.setText("Welcome, admin");
+            }else if (userDTO.getJobRole().equals("Coordinator")){
+                wellcomeText.setText("Welcome, Coordinator");
+                employeeBtn.setOnAction(event -> {
+                    // No action or show a message indicating restricted access
+                });
+
+                employeeBtn.setOpacity(0.5); // Appears disabled
+                Tooltip.install(employeeBtn, new Tooltip("No access for Coordinator"));
+            }else{
+                System.out.println("user not found !!");
+            }
+        }else {
+            wellcomeText.setText("Welcome, admin");
+        }
+
+
+
     }
 
     private void setToolTip() {
@@ -239,4 +266,20 @@ public class DashboardController  implements Initializable {
     }
 
 
+    public void loadDashboard(AnchorPane employeeRegMainAnchor) {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/zenveus/the_culinary_academy/view/dashboard.fxml"));
+            Parent root = loader.load();
+            Scene scene = new Scene(root, Color.TRANSPARENT);
+
+            Stage stage = (Stage)employeeRegMainAnchor.getScene().getWindow();
+
+            stage.setScene(scene);
+
+
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 }

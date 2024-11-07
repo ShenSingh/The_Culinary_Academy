@@ -9,7 +9,6 @@ import com.zenveus.the_culinary_academy.entity.User;
 import java.util.ArrayList;
 import java.util.List;
 
-
 public class UserBOIMPL implements UserBO {
 
     UserDAO userDAO = (UserDAO) DAOFactory.getDAOFactory().getDAO(DAOFactory.DAOTypes.USER);
@@ -20,7 +19,7 @@ public class UserBOIMPL implements UserBO {
     public boolean addUser(UserDTO userDTO) {
 
         try {
-            userDAO.add(new User(userDTO.getUserId(), userDTO.getFullName(), userDTO.getEmail(), userDTO.getPhoneNumber(), userDTO.getAddress(), userDTO.getUsername(), userDTO.getPassword()));
+            userDAO.add(new User(userDTO.getUserId(), userDTO.getFullName(), userDTO.getEmail(), userDTO.getPhoneNumber(), userDTO.getAddress(), userDTO.getJobRole(), userDTO.getUsername(), userDTO.getPassword()));
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
@@ -39,7 +38,7 @@ public class UserBOIMPL implements UserBO {
         }
 
         for (User user : allUsers) {
-            userDtoList.add(new UserDTO(user.getUserId(), user.getFullName(), user.getEmail(), user.getPhoneNumber(), user.getAddress(), user.getUsername(), user.getPassword()));
+            userDtoList.add(new UserDTO(user.getUserId(), user.getFullName(), user.getEmail(), user.getPhoneNumber(), user.getAddress(),user.getJobRole(), user.getUsername(), user.getPassword()));
         }
 
         return userDtoList;
@@ -48,7 +47,7 @@ public class UserBOIMPL implements UserBO {
     @Override
     public boolean updateUser(UserDTO userDto) {
         try {
-            userDAO.update(new User(userDto.getUserId(), userDto.getFullName(), userDto.getEmail(), userDto.getPhoneNumber(), userDto.getAddress(), userDto.getUsername(), userDto.getPassword()));
+            userDAO.update(new User(userDto.getUserId(), userDto.getFullName(), userDto.getEmail(), userDto.getPhoneNumber(), userDto.getAddress(),userDto.getJobRole(), userDto.getUsername(), userDto.getPassword()));
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
@@ -58,7 +57,7 @@ public class UserBOIMPL implements UserBO {
     @Override
     public boolean deleteUser(UserDTO userDto) {
         try {
-            userDAO.delete(new User(userDto.getUserId(), userDto.getFullName(), userDto.getEmail(), userDto.getPhoneNumber(), userDto.getAddress(), userDto.getUsername(), userDto.getPassword()));
+            userDAO.delete(new User(userDto.getUserId(), userDto.getFullName(), userDto.getEmail(), userDto.getPhoneNumber(), userDto.getAddress(),userDto.getJobRole(), userDto.getUsername(), userDto.getPassword()));
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
@@ -70,11 +69,11 @@ public class UserBOIMPL implements UserBO {
         try {
             User user = (User) userDAO.exist(userDTO.getUserId());
             if (user != null) {
-                return new UserDTO(user.getUserId(), user.getFullName(), user.getEmail(), user.getPhoneNumber(), user.getAddress(), user.getUsername(), user.getPassword());
+                return new UserDTO(user.getUserId(), user.getFullName(), user.getEmail(), user.getPhoneNumber(), user.getAddress(),user.getJobRole(), user.getUsername(), user.getPassword());
             }
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
-        return userDTO;
+        return null;
     }
 }

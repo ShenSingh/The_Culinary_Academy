@@ -59,7 +59,7 @@ public class UserDAOImpl implements UserDAO {
     }
 
     @Override
-    public Object exist(String id) throws Exception {
+    public Object exist(String id) throws Exception {  // id eka nh ne nisa
         Session session = FactoryConfiguration.getInstance().getSession();
         Transaction transaction = session.beginTransaction();
         User user = session.get(User.class, id);

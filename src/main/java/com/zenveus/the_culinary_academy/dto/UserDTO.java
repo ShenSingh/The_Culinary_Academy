@@ -1,6 +1,5 @@
 package com.zenveus.the_culinary_academy.dto;
 
-
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -15,6 +14,7 @@ public class UserDTO {
     private String email;
     private String phoneNumber;
     private String address;
+    private String jobRole; // Change to match User entity field
 
     private String username;
     private String password;

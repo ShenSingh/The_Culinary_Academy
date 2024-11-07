@@ -13,5 +13,5 @@ public interface UserBO extends SuperBO {
 
     boolean deleteUser(UserDTO userDto);
 
-    UserDTO isUserExist(UserDTO user);
+    UserDTO isUserExist(UserDTO userDTO);
 }
