@@ -73,10 +73,16 @@ public class StudentController implements Initializable {
     }
 
     public void reportPaneShowHideBtn(ActionEvent actionEvent) {
-        isShow = !isShow;
-        sideTransition.setDuration(Duration.seconds(isShow ? 1.5 : 2));
-        sideTransition.setToX(isShow ? 890 : 0);
-        updateIcon();
+        sideTransition.stop();  // Stop any ongoing transition before starting a new one
+
+        // Set starting and ending points dynamically based on isShow
+        sideTransition.setFromX(isShow ? 890 : 0);
+        sideTransition.setToX(isShow ? 0 : 890);
+        sideTransition.setDuration(Duration.seconds(1.5));
+
+        isShow = !isShow;  // Toggle the state
+
+        sideTransition.setOnFinished(e -> updateIcon()); // Update icon after the transition completes
         sideTransition.play();
     }
 

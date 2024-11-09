@@ -116,10 +116,16 @@ public class EmployeeController implements Initializable {
     }
     //   show hide side menu
     public void employeeAddPaneShowHideBtn(ActionEvent actionEvent) {
-        isShow = !isShow;
-        sideTransition.setDuration(Duration.seconds(isShow ? 1.5 : 2));
-        sideTransition.setToX(isShow ? 550 : 0);
-        updateIcon();
+        sideTransition.stop();  // Stop any ongoing transition before starting a new one
+
+        // Set starting and ending points dynamically based on isShow
+        sideTransition.setFromX(isShow ? 550 : 0);
+        sideTransition.setToX(isShow ? 0 : 550);
+        sideTransition.setDuration(Duration.seconds(1.5));
+
+        isShow = !isShow;  // Toggle the state
+
+        sideTransition.setOnFinished(e -> updateIcon()); // Update icon after the transition completes
         sideTransition.play();
     }
     //  employee back btn (search bar)
