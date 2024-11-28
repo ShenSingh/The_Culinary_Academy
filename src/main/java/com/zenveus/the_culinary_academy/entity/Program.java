@@ -5,6 +5,8 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.HashSet;
+import java.util.Set;
 
 
 @AllArgsConstructor
@@ -26,5 +28,4 @@ public class Program {
 
     @Column(name = "fee", nullable = false)
     private Double fee;
-
 }

@@ -2,7 +2,7 @@ package com.zenveus.the_culinary_academy.controllers;
 
 import com.zenveus.the_culinary_academy.bo.BOFactory;
 import com.zenveus.the_culinary_academy.bo.custom.UserBO;
-import com.zenveus.the_culinary_academy.dto.UserDTO;
+import com.zenveus.the_culinary_academy.dto.UserDto;
 import com.zenveus.the_culinary_academy.util.BCryptHasher;
 import com.zenveus.the_culinary_academy.util.Regex;
 import com.zenveus.the_culinary_academy.util.TextFields;
@@ -14,7 +14,6 @@ import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.shape.Circle;
-import javafx.scene.text.Text;
 
 import java.net.URL;
 import java.util.List;
@@ -43,26 +42,27 @@ public class MyAccountController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        
+
         setProfileImg();
         setUserDetails();
 
     }
 
     private void setUserDetails() {
-        UserDTO user = LoginController.getLoginUser();
+        UserDto user = LoginController.getLoginUser();
+        System.out.println("User: " + user);
 
         if (user == null) {
             System.out.println("User is null");
             return;
         }
 
-        UserDTO user1 = new UserDTO();
+        UserDto user1 = new UserDto();
 
         user1.setUserId(user.getUserId());
 
 
-        UserDTO updatedUser=userBO.isUserExist(user1);
+        UserDto updatedUser=userBO.isUserExist(user1);
 
         userId.setText(updatedUser.getUserId());
         userName.setText(updatedUser.getFullName());
@@ -95,11 +95,11 @@ public class MyAccountController implements Initializable {
         }
 
 
-        UserDTO updateUser = null;
-        List<UserDTO> userDTOList = userBO.getAllUsers();
+        UserDto updateUser = null;
+        List<UserDto> userDTOList = userBO.getAllUsers();
 
         // Find the existing user by ID
-        for (UserDTO userDTO : userDTOList) {
+        for (UserDto userDTO : userDTOList) {
             if (userId.getText().equals(userDTO.getUserId())) {
                 updateUser = userDTO;
                 break;
@@ -158,9 +158,9 @@ public class MyAccountController implements Initializable {
 
     private boolean isPhoneExist(String phoneNumber, String userId) {
         // Retrieve all users except the one being updated
-        List<UserDTO> existingUsers = userBO.getAllUsers();
+        List<UserDto> existingUsers = userBO.getAllUsers();
 
-        for (UserDTO userDto : existingUsers) {
+        for (UserDto userDto : existingUsers) {
             // Check if the phone number exists and if it belongs to a different user
             if (userDto.getPhoneNumber().equals(phone) && !userDto.getUserId().equals(userId)) {
                 return true; // Duplicate phone number found for another user
@@ -171,9 +171,9 @@ public class MyAccountController implements Initializable {
 
     private boolean isEmailExist(String email, String userId) {
         // Retrieve all users except the one being updated
-        List<UserDTO> existingUsers = userBO.getAllUsers();
+        List<UserDto> existingUsers = userBO.getAllUsers();
 
-        for (UserDTO userDto : existingUsers) {
+        for (UserDto userDto : existingUsers) {
             // Check if the email exists and if it belongs to a different user
             if (userDto.getEmail().equals(email) && !userDto.getUserId().equals(userId)) {
                 return true; // Duplicate email found for another user
@@ -196,10 +196,10 @@ public class MyAccountController implements Initializable {
             return;
         }
 
-        UserDTO updateUser = null;
-        List<UserDTO> userDTOList = userBO.getAllUsers();
+        UserDto updateUser = null;
+        List<UserDto> userDTOList = userBO.getAllUsers();
 
-        for (UserDTO userDTO : userDTOList) {
+        for (UserDto userDTO : userDTOList) {
             if (userId.getText().equals(userDTO.getUserId())) {
                 updateUser = userDTO;
                 break;

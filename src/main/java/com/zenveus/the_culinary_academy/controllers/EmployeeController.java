@@ -1,19 +1,24 @@
 package com.zenveus.the_culinary_academy.controllers;
 
+import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXComboBox;
 import com.zenveus.the_culinary_academy.bo.BOFactory;
 import com.zenveus.the_culinary_academy.bo.custom.UserBO;
-import com.zenveus.the_culinary_academy.dto.UserDTO;
+import com.zenveus.the_culinary_academy.dto.UserDto;
 import com.zenveus.the_culinary_academy.tm.UserTm;
 import com.zenveus.the_culinary_academy.util.BCryptHasher;
 import com.zenveus.the_culinary_academy.util.Regex;
 import com.zenveus.the_culinary_academy.util.TextFields;
 
 import javafx.animation.TranslateTransition;
+import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
@@ -23,10 +28,13 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
+import javafx.stage.Stage;
 import javafx.util.Duration;
 
 import java.io.File;
+import java.io.IOException;
 import java.net.URL;
 import java.util.List;
 import java.util.ResourceBundle;
@@ -52,9 +60,8 @@ public class EmployeeController implements Initializable {
     public TableColumn<?,?> colUsrEmail;
     public TableColumn<?,?> colUsrPhone;
     public TableColumn<?, ?> colUsrAddress;
-
-    public UserTm selectedItem;
     public JFXComboBox<String> userJob;
+    public UserTm selectedItem;
     private TranslateTransition sideTransition;
     private boolean isShow = false;
 
@@ -81,7 +88,7 @@ public class EmployeeController implements Initializable {
     }
 
     private String getLastUserId() {
-        List<UserDTO> allUsers = userBO.getAllUsers();
+        List<UserDto> allUsers = userBO.getAllUsers();
 
         if (allUsers.isEmpty()) {
             return "U001";
@@ -147,9 +154,9 @@ public class EmployeeController implements Initializable {
             return;
         }
 
-        List<UserDTO> allUsers = userBO.getAllUsers();
+        List<UserDto> allUsers = userBO.getAllUsers();
         obList.clear();
-        for (UserDTO userDto : allUsers) {
+        for (UserDto userDto : allUsers) {
             if(userDto.getUserId().contains(searchText) || userDto.getFullName().contains(searchText) || userDto.getEmail().contains(searchText) || userDto.getPhoneNumber().contains(searchText) || userDto.getAddress().contains(searchText)){
                 obList.add(new UserTm(userDto.getUserId(), userDto.getFullName(), userDto.getEmail(), userDto.getPhoneNumber(), userDto.getAddress()));
             }
@@ -168,14 +175,15 @@ public class EmployeeController implements Initializable {
     public void employeeDeleteBtn(ActionEvent actionEvent) {
         System.out.println("click employee delete Btn");
 
-        UserDTO user = new UserDTO();
+        UserDto user = new UserDto();
         user.setUserId(employeeIDField.getText());
         user.setFullName(employeeNameField.getText());
         user.setEmail(employeeEmailField.getText());
         user.setPhoneNumber(employeePhoneField.getText());
         user.setAddress(employeeAddressField.getText());
+        user.setJobRole(userJob.getValue());
 
-        UserDTO userDto = userBO.isUserExist(user);
+        UserDto userDto = userBO.isUserExist(user);
 
         if(userDto == null){
             new Alert(Alert.AlertType.ERROR, "Employee Not Found!").showAndWait();
@@ -202,25 +210,22 @@ public class EmployeeController implements Initializable {
         String employeeName = employeeNameField.getText();
         String employeePhone = employeePhoneField.getText();
         String employeeAddress = employeeAddressField.getText();
-        String username = generateUsername(employeeID);
-        String password = generatePassword();
-        String job = userJob.getValue();
-
-        System.out.println("userName : "+ username);
-        System.out.println("userPass : "+ password);
+        String username = generateUsername();
+        String password = generatePassword(userJob.getValue());
+        String jobRole = userJob.getValue();
 
 
-        UserDTO userDTO = new UserDTO();
+        UserDto userDTO = new UserDto();
 
         userDTO.setUserId(employeeID);
         userDTO.setFullName(employeeName);
         userDTO.setEmail(employeeEmail);
         userDTO.setPhoneNumber(employeePhone);
         userDTO.setAddress(employeeAddress);
+        userDTO.setJobRole(jobRole);
 
         userDTO.setUsername(username);
         userDTO.setPassword(password);
-        userDTO.setJobRole(job);
 
         System.out.println(userDTO);
 
@@ -237,7 +242,7 @@ public class EmployeeController implements Initializable {
         }
 
         // search and make sure no duplicate email
-        boolean isEmailExist = isEmailExist(employeeEmail,employeeID);
+        boolean isEmailExist = isEmailExist(employeeEmail);
         if(isEmailExist){
             new Alert(Alert.AlertType.WARNING, "Email Already Exist!").showAndWait();
             employeeEmailField.requestFocus();
@@ -245,7 +250,7 @@ public class EmployeeController implements Initializable {
         }
 
         // search and make sure no duplicate phone number
-        boolean isPhoneExist = isPhoneExist(employeePhone,employeeID);
+        boolean isPhoneExist = isPhoneExist(employeePhone);
         if(isPhoneExist){
             new Alert(Alert.AlertType.WARNING, "Phone Number Already Exist!").showAndWait();
             employeePhoneField.requestFocus();
@@ -268,41 +273,42 @@ public class EmployeeController implements Initializable {
         }
     }
 
-    private String generatePassword() {
+    private String generatePassword(String jodName) {
 
-        return BCryptHasher.hashPassword("admin");
+        if(jodName.equals("Admin")){
+            return BCryptHasher.hashPassword("admin");
+        }
+        return BCryptHasher.hashPassword("coordinator");
     }
-    private String generateUsername(String employeeName) {
-        // username is the first word of the full name
-        return employeeName.split("\\s+")[0].toLowerCase();
+    private String generateUsername() {
+        return employeeIDField.getText();
     }
 
-    private boolean isPhoneExist(String employeePhone, String userId) {
-        // Retrieve all users except the one being updated
-        List<UserDTO> existingUsers = userBO.getAllUsers();
+    private boolean isPhoneExist(String employeePhone) {
+        // search and make sure no duplicate phone number
+        List<UserDto> existingUsers = userBO.getAllUsers();
 
-        for (UserDTO userDto : existingUsers) {
-            // Check if the phone number exists and if it belongs to a different user
-            if (userDto.getPhoneNumber().equals(employeePhone) && !userDto.getUserId().equals(userId)) {
-                return true; // Duplicate phone number found for another user
+        for (UserDto userDto : existingUsers) {
+            if(userDto.getPhoneNumber().equals(employeePhone)){
+                return true;
             }
         }
+
         return false;
     }
 
-    private boolean isEmailExist(String employeeEmail, String userId) {
-        // Retrieve all users except the one being updated
-        List<UserDTO> existingUsers = userBO.getAllUsers();
+    private boolean isEmailExist(String employeeEmail) {
+        // search and make sure no duplicate email
+        List<UserDto> existingUsers = userBO.getAllUsers();
 
-        for (UserDTO userDto : existingUsers) {
-            // Check if the email exists and if it belongs to a different user
-            if (userDto.getEmail().equals(employeeEmail) && !userDto.getUserId().equals(userId)) {
-                return true; // Duplicate email found for another user
+        for (UserDto userDto : existingUsers) {
+            if(userDto.getEmail().equals(employeeEmail)){
+                return true;
             }
         }
+
         return false;
     }
-
 
     //clear all fields
     public void clearAllFields(){
@@ -312,79 +318,68 @@ public class EmployeeController implements Initializable {
         employeeAddressField.clear();
     }
 
-    // Employee update button action
+    // employee update btn
     public void employeeUpdateBtn(ActionEvent actionEvent) {
-        System.out.println("Click employee update button");
-        System.out.println("Update address: " + employeeAddressField.getText());
+        System.out.println("click employee update Btn");
 
-        UserDTO updateUser = null;
-        List<UserDTO> userDTOList = userBO.getAllUsers();
+        UserDto user = new UserDto();
+        user.setUserId(employeeIDField.getText());
+        user.setFullName(employeeNameField.getText());
+        user.setEmail(employeeEmailField.getText());
+        user.setPhoneNumber(employeePhoneField.getText());
+        user.setAddress(employeeAddressField.getText());
+        user.setJobRole(userJob.getValue());
 
-        // Find the existing user by ID
-        for (UserDTO userDTO : userDTOList) {
-            if (employeeIDField.getText().equals(userDTO.getUserId())) {
-                updateUser = userDTO;
-                break;
-            }
-        }
 
-        if (updateUser == null) {
-            new Alert(Alert.AlertType.ERROR, "User not found!").showAndWait();
-            return;
-        }
 
-        // Update fields directly on updateUser
-        updateUser.setFullName(employeeNameField.getText());
-        updateUser.setEmail(employeeEmailField.getText());
-        updateUser.setPhoneNumber(employeePhoneField.getText());
-        updateUser.setAddress(employeeAddressField.getText());
-        updateUser.setJobRole(userJob.getValue());
-
-        // Validation checks
-        if (!Regex.isTextFieldValid(TextFields.EMAIL, updateUser.getEmail())) {
+        if(!Regex.isTextFieldValid(TextFields.EMAIL, user.getEmail())){
             new Alert(Alert.AlertType.WARNING, "Invalid Email!").showAndWait();
             employeeEmailField.requestFocus();
             return;
         }
 
-        if (!Regex.isTextFieldValid(TextFields.CONTACT, updateUser.getPhoneNumber())) {
+        if(!Regex.isTextFieldValid(TextFields.CONTACT, user.getPhoneNumber())){
             new Alert(Alert.AlertType.WARNING, "Invalid Phone Number!").showAndWait();
             employeePhoneField.requestFocus();
             return;
         }
 
-        // Check for duplicate email
-        if (isEmailExist(updateUser.getEmail(), updateUser.getUserId())) {
-            new Alert(Alert.AlertType.WARNING, "Email Already Exists!").showAndWait();
+        // search and make sure no duplicate email
+        boolean isEmailExist = isEmailExist(user.getEmail());
+        if(isEmailExist){
+            new Alert(Alert.AlertType.WARNING, "Email Already Exist!").showAndWait();
             employeeEmailField.requestFocus();
             return;
         }
 
-        // Check for duplicate phone number
-        if (isPhoneExist(updateUser.getPhoneNumber(), updateUser.getUserId())) {
-            new Alert(Alert.AlertType.WARNING, "Phone Number Already Exists!").showAndWait();
+        // search and make sure no duplicate phone number
+        boolean isPhoneExist = isPhoneExist(user.getPhoneNumber());
+        if(isPhoneExist){
+            new Alert(Alert.AlertType.WARNING, "Phone Number Already Exist!").showAndWait();
             employeePhoneField.requestFocus();
             return;
         }
 
-        // Update the user
-        boolean isUpdated = userBO.updateUser(updateUser);
-        if (isUpdated) {
+        UserDto userExist = userBO.isUserExist(user);
+
+
+        boolean isUpdated = userBO.updateUser(userExist);
+        if(isUpdated){
             new Alert(Alert.AlertType.INFORMATION, "Employee Updated Successfully!").showAndWait();
             setEmployeeID();
             clearAllFields();
             loadAllEmployees();
-        } else {
+        }else{
             new Alert(Alert.AlertType.ERROR, "Failed to Update Employee!").showAndWait();
         }
-    }
 
+    }
 
     public void loadAllEmployees(){
         try {
-            List<UserDTO> allUsers = userBO.getAllUsers();
+            List<UserDto> allUsers = userBO.getAllUsers();
             obList.clear();
-            for (UserDTO userDto : allUsers) {
+            for (UserDto userDto : allUsers) {
                 obList.add(new UserTm(userDto.getUserId(), userDto.getFullName(), userDto.getEmail(), userDto.getPhoneNumber(), userDto.getAddress()));
             }
             userTable.setItems(obList);
@@ -404,21 +399,18 @@ public class EmployeeController implements Initializable {
     public void rowClick(MouseEvent mouseEvent) {
         System.out.println("click row");
 
-        List<UserDTO> userDTOList = userBO.getAllUsers();
-        UserDTO selectUser = null;
+        List<UserDto> userDTOList = userBO.getAllUsers();
+        UserDto selectUser = null;
 
         if (userTable.getSelectionModel().getSelectedItem() != null) {
             selectedItem = userTable.getSelectionModel().getSelectedItem();
             employeeIDField.setText(selectedItem.getUserId());
 
-            for (UserDTO userDTO : userDTOList){
+            for (UserDto userDTO : userDTOList){
                 if (userDTO.getUserId().equals(selectedItem.getUserId())){
                     selectUser = userDTO;
                 }
             }
-
-            sidePaneTitle.setText("Update User");
-
             employeeNameField.setText(selectedItem.getFullName());
             employeeEmailField.setText(selectedItem.getEmail());
             employeePhoneField.setText(selectedItem.getPhoneNumber());

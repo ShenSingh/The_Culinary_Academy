@@ -2,8 +2,9 @@ package com.zenveus.the_culinary_academy.controllers;
 
 import com.zenveus.the_culinary_academy.bo.BOFactory;
 import com.zenveus.the_culinary_academy.bo.custom.UserBO;
-import com.zenveus.the_culinary_academy.dto.UserDTO;
+import com.zenveus.the_culinary_academy.dto.UserDto;
 import com.zenveus.the_culinary_academy.util.BCryptHasher;
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -22,14 +23,14 @@ import java.util.List;
 public class LoginController {
     public AnchorPane rootNode;
 
-    static UserDTO loginUser;
+    static UserDto loginUser;
     static String userPassword;
 
-    public static UserDTO getLoginUser() {
+    public static UserDto getLoginUser() {
         return loginUser;
     }
 
-    public void setLoginUser(UserDTO loginUser) {
+    public void setLoginUser(UserDto loginUser) {
         this.loginUser = loginUser;
     }
 
@@ -57,21 +58,52 @@ public class LoginController {
     }
 
     @FXML
-    private void logBtn(ActionEvent event) throws IOException {
-//        dashBord();
-        List<UserDTO> userDTOList = userBO.getAllUsers();
+    public void initialize() {
+        // Run ensureSampleUser in another thread
+        ensureSampleUser();
+    }
+    private void ensureSampleUser() {
+        try {
+            List<UserDto> allUsers = userBO.getAllUsers();
+            if (allUsers.isEmpty()) {
+                // No users found, create a sample user
+                UserDto sampleUser = new UserDto();
+                sampleUser.setUserId("U001");
+                sampleUser.setFullName("Admin User");
+                sampleUser.setEmail("admin@academy.com");
+                sampleUser.setPhoneNumber("1234567890");
+                sampleUser.setAddress("123 Academy Street");
+                sampleUser.setJobRole("Admin");
+                sampleUser.setUsername("admin");
 
+                // Use a default secure password and hash it
+                String defaultPassword = "admin";
+                sampleUser.setPassword(BCryptHasher.hashPassword(defaultPassword));
 
+                // Add the sample user to the database
+                boolean isAdded = userBO.addUser(sampleUser);
+                if (isAdded) {
+                    System.out.println("Sample user added successfully.");
+                } else {
+                    System.out.println("Failed to add sample user.");
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+    @FXML
+    private void logBtn(ActionEvent event) throws Exception {
+        List<UserDto> userDTOList = userBO.getAllUsers();
 
-        String uName=uNameText.getText();
-        String uPass=uPassText.getText();
+        String uName = uNameText.getText();
+        String uPass = uPassText.getText();
 
-        for(UserDTO userDTO : userDTOList){
+        for (UserDto userDTO : userDTOList) {
             System.out.println(userDTO);
 
-            if (uName.equals(userDTO.getUsername())){
-
-                if (BCryptHasher.verifyPassword(uPass, userDTO.getPassword())){
+            if (uName.equals(userDTO.getUsername())) {
+                if (BCryptHasher.verifyPassword(uPass, userDTO.getPassword())) {
                     System.out.println("Go to dashBord");
 
                     uNameText.clear();
@@ -79,19 +111,15 @@ public class LoginController {
                     loginUser = userDTO;
                     userPassword = uPass;
                     dashBord();
-                }else {
+                } else {
                     System.out.println("not password");
                     new Alert(Alert.AlertType.WARNING, "wrong User Password ");
-
                 }
-
-            }else {
+            } else {
                 System.out.println("not id");
                 new Alert(Alert.AlertType.WARNING, "wrong User ID ");
-
             }
         }
-
     }
     void printAlert(String content){
         uNameText.setText("");

@@ -2,14 +2,15 @@ package com.zenveus.the_culinary_academy.controllers;
 
 import com.zenveus.the_culinary_academy.bo.BOFactory;
 import com.zenveus.the_culinary_academy.bo.custom.ProgramBO;
-import com.zenveus.the_culinary_academy.bo.custom.UserBO;
-import com.zenveus.the_culinary_academy.dto.ProgramDTO;
-import com.zenveus.the_culinary_academy.dto.UserDTO;
-import com.zenveus.the_culinary_academy.entity.User;
+import com.zenveus.the_culinary_academy.dto.ProgramDto;
+import com.zenveus.the_culinary_academy.dto.UserDto;
+import com.zenveus.the_culinary_academy.entity.Program;
 import com.zenveus.the_culinary_academy.tm.ProgramTm;
 import com.zenveus.the_culinary_academy.util.Regex;
 import com.zenveus.the_culinary_academy.util.TextFields;
 import javafx.animation.TranslateTransition;
+import javafx.collections.ObservableList;
+import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Alert;
@@ -58,7 +59,9 @@ public class ProgramController implements Initializable {
 
     public ProgramTm selectedProgram;
 
-    ProgramBO programBO = (ProgramBO) BOFactory.getBoFactory().getBO(BOFactory.BOTypes.PROGRAM);
+
+    ObservableList<ProgramTm> observableList = FXCollections.observableArrayList();
+    ProgramBO programBo = (ProgramBO) BOFactory.getBoFactory().getBO(BOFactory.BOTypes.PROGRAM);
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -70,18 +73,14 @@ public class ProgramController implements Initializable {
 
     private void loadAllPrograms() {
         try {
-            List<ProgramDTO> allProgram = programBO.getAllProgram();
-            programTable.getItems().clear();
-            for (ProgramDTO programDTO : allProgram) {
-                programTable.getItems().add(new ProgramTm(
-                        programDTO.getProgramId(),
-                        programDTO.getProgramName(),
-                        programDTO.getDuration(),
-                        programDTO.getFee()
-                ));
+            List<ProgramDto> allPrograms = programBo.getAllPrograms();
+            observableList.clear();
+            for (ProgramDto programDto : allPrograms) {
+                observableList.add(new ProgramTm(programDto.getProgramId(), programDto.getProgramName(), programDto.getDuration(), String.valueOf(programDto.getFee())));
             }
+            programTable.setItems(observableList);
         } catch (Exception e) {
-            e.printStackTrace();
+            throw new RuntimeException(e);
         }
     }
 
@@ -93,19 +92,19 @@ public class ProgramController implements Initializable {
     }
 
     private void setProgramID() {
-        String lastId = getLastUserId();
-        programIDField.setText(lastId);
-        programIDField.setDisable(true);
+        String lastProgramId = getLastProgramId();
+        programIDField.setText(lastProgramId);
+        programIDField.setEditable(true);
     }
 
-    private String getLastUserId() {
-        List<ProgramDTO> allProgram = programBO.getAllProgram();
+    private String getLastProgramId() {
+        List<ProgramDto> allPrograms = programBo.getAllPrograms();
 
-        if (allProgram.isEmpty()) {
+        if (allPrograms.isEmpty()) {
             return "P001";
         }
 
-        String lastProgramId = allProgram.get(allProgram.size() - 1).getProgramId();
+        String lastProgramId = allPrograms.get(allPrograms.size() - 1).getProgramId();
         if (lastProgramId == null || lastProgramId.isEmpty() || !lastProgramId.matches("P\\d+")) {
             return "P001";
         }
@@ -119,7 +118,7 @@ public class ProgramController implements Initializable {
     private void setTransition() {
         sideTransition = new TranslateTransition(Duration.seconds(1.5), programRegMainAnchor);
         sideTransition.setFromX(0);
-        sideTransition.setToX(548); // Set initial `toX` based on `isShow`
+        sideTransition.setToX(550); // Set initial `toX` based on `isShow`
         updateIcon();
     }
 
@@ -147,15 +146,39 @@ public class ProgramController implements Initializable {
     //  program back btn (search bar)
     public void programBackBtn(ActionEvent actionEvent) {
         System.out.println("click program page back Btn");
+
+        DashboardController dashboardController = new DashboardController();
+        dashboardController.loadDashboard(programRegMainAnchor);
     }
     // program search filed enter click (search bar)
     public void searchProgramClick(ActionEvent actionEvent) {
         System.out.println("click program search Btn");
+
+        String programName = searchEmployee.getText();
+
+        if (programName.isEmpty()) {
+            loadAllPrograms();
+            return;
+        }
+
+        List<ProgramDto> allPrograms = programBo.getAllPrograms();
+        observableList.clear();
+
+        for (ProgramDto programDto : allPrograms) {
+            if (programDto.getProgramName().contains(programName)) {
+                observableList.add(new ProgramTm(programDto.getProgramId(), programDto.getProgramName(), programDto.getDuration(), String.valueOf(programDto.getFee())));
+            }
+        }
+
+        programTable.setItems(observableList);
+
     }
 
     // program search clear btn (search bar)
     public void searchProgramClearBtn(ActionEvent actionEvent) {
         System.out.println("click program create Btn");
+
+        searchEmployee.clear();
     }
 
     
@@ -164,17 +187,15 @@ public class ProgramController implements Initializable {
     // program delete btn
     public void programDeleteBtn(ActionEvent actionEvent) {
         System.out.println("click program delete Btn");
+
         if (selectedProgram != null) {
             try {
-                boolean isDeleted = programBO.deleteProgram(selectedProgram.getProgramId());
+                boolean isDeleted = programBo.deleteProgram(selectedProgram.getProgramId());
                 System.out.println(isDeleted);
                 if (isDeleted) {
-                    new Alert(Alert.AlertType.INFORMATION, "Program Deleted Successfully!").showAndWait();
                     loadAllPrograms();
                     setProgramID();
                     clearFields();
-                }else {
-                    new Alert(Alert.AlertType.ERROR, "Failed to Delete Program!").showAndWait();
                 }
             } catch (Exception e) {
                 e.printStackTrace();
@@ -186,46 +207,44 @@ public class ProgramController implements Initializable {
     public void programSaveBtn(ActionEvent actionEvent) {
         System.out.println("click program save Btn");
 
-        String programId = programIDField.getText();
+        String programID = programIDField.getText();
         String programName = programNameField.getText();
         String programDuration = programDurationField.getText();
-        double programFee = Double.parseDouble(programFeeField.getText());
+        String programFee = programFeeField.getText();
 
-        ProgramDTO programDTO = new ProgramDTO(programId, programName, programDuration, programFee);
-
-
-        if(!Regex.isTextFieldValid(TextFields.PRICE, programFeeField.getText())){
-            new Alert(Alert.AlertType.WARNING, "Invalid Fee").showAndWait();
-            programFeeField.requestFocus();
+        // validate fee using regex
+        if (!Regex.isTextFieldValid(TextFields.PRICE, programFee)) {
+            new Alert(Alert.AlertType.WARNING, "Invalid Fee!").showAndWait();
             return;
         }
+
+        ProgramDto programDto = new ProgramDto();
+
+        programDto.setProgramId(programID);
+        programDto.setProgramName(programName);
+        programDto.setDuration(programDuration);
+        programDto.setFee(Double.parseDouble(programFee));
+
+        System.out.println(programDto);
+
         try {
-            boolean isAdded = programBO.addProgram(programDTO);
+            boolean isAdded = programBo.addProgram(programDto);
+            System.out.println(isAdded);
             if (isAdded) {
-                new Alert(Alert.AlertType.INFORMATION, "Program Added Successfully!").showAndWait();
                 loadAllPrograms();
                 setProgramID();
                 clearFields();
-            } else {
-                new Alert(Alert.AlertType.ERROR, "Failed to Add Program!").showAndWait();
             }
         } catch (Exception e) {
             e.printStackTrace();
         }
-
-    }
-
-    private void clearFields() {
-        programNameField.clear();
-        programDurationField.clear();
-        programFeeField.clear();
     }
 
     // program update btn
     public void programUpdateBtn(ActionEvent actionEvent) {
         System.out.println("click program update Btn");
 
-        ProgramDTO programDto = new ProgramDTO();
+        ProgramDto programDto = new ProgramDto();
         programDto.setProgramId(programIDField.getText());
         programDto.setProgramName(programNameField.getText());
         programDto.setDuration(programDurationField.getText());
@@ -238,15 +257,12 @@ public class ProgramController implements Initializable {
         }
 
         try {
-            boolean isUpdated = programBO.updateProgram(programDto);
+            boolean isUpdated = programBo.updateProgram(programDto);
             System.out.println(isUpdated);
             if (isUpdated) {
-                new Alert(Alert.AlertType.INFORMATION, "Program Updated Successfully!").showAndWait();
                 loadAllPrograms();
                 clearFields();
                 setProgramID();
-            }else{
-                new Alert(Alert.AlertType.ERROR, "Failed to Update Program!").showAndWait();
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -257,20 +273,25 @@ public class ProgramController implements Initializable {
         System.out.println("click program row");
 
         if (programTable.getSelectionModel().getSelectedItem() != null) {
-            sidePaneTitle.setText("Update Program");
             selectedProgram = programTable.getSelectionModel().getSelectedItem();
             programIDField.setText(selectedProgram.getProgramId());
             programNameField.setText(selectedProgram.getProgramName());
             programDurationField.setText(selectedProgram.getDuration());
-            programFeeField.setText(String.valueOf(selectedProgram.getFee()));
+            programFeeField.setText(selectedProgram.getFee());
 
             if (isShow) {
-                isShow = false;
-                sideTransition.setDuration(Duration.seconds(2));
+                isShow = !isShow;
+                sideTransition.setDuration(Duration.seconds(isShow ? 1.5 : 2));
                 sideTransition.setToX(isShow ? 550 : 0);
                 updateIcon();
                 sideTransition.play();
             }
         }
+    }
+
+    public void clearFields() {
+        programNameField.clear();
+        programDurationField.clear();
+        programFeeField.clear();
     }
 }

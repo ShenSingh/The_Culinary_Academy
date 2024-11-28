@@ -1,9 +1,9 @@
 package com.zenveus.the_culinary_academy.util;
 
+import javafx.scene.paint.Paint;
 import com.jfoenix.controls.JFXPasswordField;
 import com.jfoenix.controls.JFXTextArea;
 import com.jfoenix.controls.JFXTextField;
-import javafx.scene.paint.Paint;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;

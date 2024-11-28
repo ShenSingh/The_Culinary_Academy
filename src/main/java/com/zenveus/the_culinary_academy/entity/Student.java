@@ -1,5 +1,7 @@
 package com.zenveus.the_culinary_academy.entity;
 
+import java.util.HashSet;
+import java.util.Set;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -7,8 +9,6 @@ import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
-import java.util.HashSet;
-import java.util.Set;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -18,9 +18,8 @@ import java.util.Set;
 @Table(name = "student")
 public class Student {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "student_id")
-    private Long studentId;
+    private String studentId;
 
     @Column(name = "student_nic", nullable = false)
     private String studentNic;
@@ -32,7 +31,7 @@ public class Student {
     private String fullName;
 
     @Column(name = "address", nullable = false)
-    private String adress;
+    private String address;
 
     @Column(name = "email", unique = true, nullable = false)
     private String email;
@@ -43,14 +42,8 @@ public class Student {
     @Column(name = "registration_date")
     private LocalDate registrationDate;
 
-    @Column(name = "remaining_balance", nullable = false)
-    private Double remainingBalance;
-
     @Column(name = "registration_time")
     private LocalTime registrationTime;
-
-    @OneToMany(mappedBy = "student", cascade = CascadeType.ALL)
-    private Set<StudentProgram> studentPrograms = new HashSet<>();
 
 }
 

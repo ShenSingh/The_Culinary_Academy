@@ -1,17 +1,18 @@
 package com.zenveus.the_culinary_academy.bo.custom;
 
 import com.zenveus.the_culinary_academy.bo.SuperBO;
-import com.zenveus.the_culinary_academy.dto.UserDTO;
+import com.zenveus.the_culinary_academy.dto.UserDto;
 
 import java.util.List;
 
 public interface UserBO extends SuperBO {
-    boolean addUser(UserDTO userDTO);
-    List<UserDTO> getAllUsers();
+    boolean addUser(UserDto userDto) throws Exception;
 
-    boolean updateUser(UserDTO userDto);
+    List<UserDto> getAllUsers();
 
-    boolean deleteUser(UserDTO userDto);
+    boolean updateUser(UserDto userDto);
 
-    UserDTO isUserExist(UserDTO userDTO);
+    boolean deleteUser(UserDto userDto);
+
+    UserDto isUserExist(UserDto user);
 }

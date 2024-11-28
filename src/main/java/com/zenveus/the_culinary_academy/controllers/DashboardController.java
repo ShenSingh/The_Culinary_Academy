@@ -1,7 +1,7 @@
 package com.zenveus.the_culinary_academy.controllers;
 
 import com.zenveus.the_culinary_academy.Launcher;
-import com.zenveus.the_culinary_academy.dto.UserDTO;
+import com.zenveus.the_culinary_academy.dto.UserDto;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -12,7 +12,6 @@ import javafx.scene.Scene;
 import javafx.scene.chart.LineChart;
 import javafx.scene.chart.PieChart;
 import javafx.scene.chart.XYChart;
-import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.Tooltip;
 import javafx.scene.layout.AnchorPane;
@@ -58,13 +57,13 @@ public class DashboardController  implements Initializable {
     }
 
     private void getLoginUser() {
-        UserDTO userDTO = LoginController.getLoginUser();
+        UserDto userDTO = LoginController.getLoginUser();
 
         if (userDTO != null){
             if (userDTO.getJobRole().equals("Admin")){
-                wellcomeText.setText("Welcome, admin");
+                wellcomeText.setText("Welcome, Admin - "+LoginController.getLoginUser().getUsername());
             }else if (userDTO.getJobRole().equals("Coordinator")){
-                wellcomeText.setText("Welcome, Coordinator");
+                wellcomeText.setText("Welcome, Coordinator - "+LoginController.getLoginUser().getUsername());
                 employeeBtn.setOnAction(event -> {
                     // No action or show a message indicating restricted access
                 });
