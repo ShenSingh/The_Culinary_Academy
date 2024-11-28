@@ -15,6 +15,7 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.Initializable;
+import javafx.scene.chart.PieChart;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
@@ -63,7 +64,10 @@ public class StudentController implements Initializable {
     public TableColumn<?,?> colStuAddress;
     public TableView<StudentTm> studentTable;
     public TableColumn<?,?> colAction;
-    public JFXComboBox paymentCombo;
+    public JFXComboBox<String> paymentCombo;
+
+    public PieChart studentPie1;
+    public PieChart studentPie2;
 
     private TranslateTransition sideTransition;
     private boolean isShow = false;
@@ -83,6 +87,28 @@ public class StudentController implements Initializable {
         setPaymentComboBox();
         setProgramComboAction();
         disableFields();
+        setChartValues();
+    }
+
+    private void setChartValues() {
+        //        pie chart
+        // Add demo data to the PieChart
+        PieChart.Data courseA = new PieChart.Data("Course A", 30);
+        PieChart.Data courseB = new PieChart.Data("Course B", 25);
+        PieChart.Data courseC = new PieChart.Data("Course C", 20);
+        PieChart.Data courseD = new PieChart.Data("Course D", 15);
+        PieChart.Data courseE = new PieChart.Data("Course E", 10);
+
+        studentPie1.getData().addAll(courseA, courseB, courseC, courseD, courseE);
+
+        // Add demo data to the PieChart
+        PieChart.Data programA = new PieChart.Data("Culinary Arts", 40);
+        PieChart.Data programB = new PieChart.Data("Baking & Pastry", 25);
+        PieChart.Data programC = new PieChart.Data("Food Science", 15);
+        PieChart.Data programD = new PieChart.Data("Hospitality Management", 10);
+        PieChart.Data programE = new PieChart.Data("Nutrition", 10);
+
+        studentPie2.getData().addAll(programA, programB, programC, programD, programE);
     }
 
     private void disableFields() {
