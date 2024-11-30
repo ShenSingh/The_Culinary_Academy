@@ -12,7 +12,7 @@
 <?import javafx.scene.text.Text?>
 
 <AnchorPane prefHeight="630.0" prefWidth="1065.0" style="-fx-background-color: transpanent; -fx-background-radius: 20px;" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.zenveus.the_culinary_academy.controllers.ProgramController">
-   <AnchorPane layoutX="5.0" layoutY="5.0" prefHeight="620.0" prefWidth="1055.0" style="-fx-background-color: rgba(0, 0, 0, 0.5); -fx-background-radius: 30px;">
+   <AnchorPane layoutX="5.0" layoutY="5.0" prefHeight="620.0" prefWidth="1055.0" style="-fx-background-color: rgba(0, 0, 0, 0.0); -fx-background-radius: 30px;">
       <TableView fx:id="programTable" layoutX="25.0" layoutY="190.0" onMouseClicked="#rowClick" prefHeight="412.0" prefWidth="712.0" style="-fx-background-color: transpanent; -fx-border-color: rgba(0, 0, 0, 0.4); -fx-border-width: 1px; -fx-border-radius: 5px; -fx-background-radius: 5px;">
          <columns>
             <TableColumn fx:id="colProId" prefWidth="117.0" style="-fx-background-color: white; -fx-border-color: transparent transparent black transparent; -fx-border-width: 0 0 1px 0;" text="ID" />

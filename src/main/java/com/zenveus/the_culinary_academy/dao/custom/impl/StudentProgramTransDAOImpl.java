@@ -52,4 +52,44 @@ public class StudentProgramTransDAOImpl implements StudentProgramTransDAO {
         return true;
     }
 
+    @Override
+    public List<Object[]> getStudentCourseCount() {
+        List<Object[]> studentCourseCount = null;
+        Session session = FactoryConfiguration.getInstance().getSession();
+        Transaction transaction = session.beginTransaction();
+        studentCourseCount = session.createQuery("SELECT p.programId, COUNT(sp.student.studentId) FROM StudentProgram sp JOIN sp.program p GROUP BY p.programId", Object[].class)
+                .list();
+        transaction.commit();
+        session.close();
+
+
+        return studentCourseCount;
+    }
+
+    @Override
+    public List<Object[]> getStudentsDoingAllPrograms() {
+        List<Object[]> studentsDoingAllPrograms = null;
+        Session session = FactoryConfiguration.getInstance().getSession();
+        Transaction transaction = session.beginTransaction();
+        studentsDoingAllPrograms = session.createQuery("SELECT s.studentId FROM Student s WHERE (SELECT COUNT(sp.program.programId) FROM StudentProgram sp WHERE sp.student.studentId = s.studentId) = (SELECT COUNT(p.programId) FROM Program p)", Object[].class)
+                .list();
+        transaction.commit();
+        session.close();
+
+        return studentsDoingAllPrograms;
+    }
+
+    @Override
+    public List<Object[]> getMonthlyTotalPayments() {
+        List<Object[]> monthlyTotalPayments = null;
+        Session session = FactoryConfiguration.getInstance().getSession();
+        Transaction transaction = session.beginTransaction();
+        monthlyTotalPayments = session.createQuery("SELECT MONTH(p.paymentDate), SUM(p.amount) FROM Payment p GROUP BY MONTH(p.paymentDate)", Object[].class)
+                .list();
+        transaction.commit();
+        session.close();
+
+        return monthlyTotalPayments;
+    }
+
 }

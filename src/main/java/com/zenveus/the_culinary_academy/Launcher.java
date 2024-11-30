@@ -5,6 +5,7 @@ import com.zenveus.the_culinary_academy.entity.Student;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
+import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import org.hibernate.Session;
@@ -18,11 +19,12 @@ public class Launcher extends Application {
     @Override
     public void start(Stage stage) throws Exception {
         FXMLLoader fxmlLoader = new FXMLLoader(Launcher.class.getResource("view/loginPage.fxml"));
-        Scene scene = new Scene(fxmlLoader.load());
+        Scene scene = new Scene(fxmlLoader.load(),Color.TRANSPARENT);
         stage.setScene(scene);
         stage.setResizable(false);
         stage.initStyle(StageStyle.UNDECORATED);
         stage.initStyle(StageStyle.TRANSPARENT);
+
 
         stage.show();
 

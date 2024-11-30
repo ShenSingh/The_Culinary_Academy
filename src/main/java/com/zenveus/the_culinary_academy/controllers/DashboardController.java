@@ -1,6 +1,8 @@
 package com.zenveus.the_culinary_academy.controllers;
 
 import com.zenveus.the_culinary_academy.Launcher;
+import com.zenveus.the_culinary_academy.bo.BOFactory;
+import com.zenveus.the_culinary_academy.bo.custom.ChartBO;
 import com.zenveus.the_culinary_academy.dto.UserDto;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
@@ -22,6 +24,8 @@ import javafx.stage.StageStyle;
 
 import java.io.IOException;
 import java.net.URL;
+import java.util.Collections;
+import java.util.List;
 import java.util.ResourceBundle;
 
 public class DashboardController  implements Initializable {
@@ -46,6 +50,8 @@ public class DashboardController  implements Initializable {
 
     Stage dashStage;
 
+
+    ChartBO chartBO = (ChartBO) BOFactory.getBoFactory().getBO(BOFactory.BOTypes.CHART);
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -95,9 +101,14 @@ public class DashboardController  implements Initializable {
     }
 
     private void setCounts() {
-        programCount.setText("5 Programs");
-        studentCount.setText("100 Students");
-        codinatorCount.setText("10 Coordinators");
+        int proCount = chartBO.getProgramCount();
+        programCount.setText(proCount+" Programs");
+
+        int stuCount = chartBO.getStudentCount();
+        studentCount.setText(stuCount+" Students");
+
+        int coCount = chartBO.getCoordinatorCount();
+        codinatorCount.setText(coCount+" Coordinators");
     }
 
     private void setChartData() {
@@ -106,39 +117,50 @@ public class DashboardController  implements Initializable {
         paymentSeries.setName("Monthly Payments");
 
         // Add demo data (Month and Payment Amount)
-        paymentSeries.getData().add(new XYChart.Data<>("January", 150));
-        paymentSeries.getData().add(new XYChart.Data<>("February", 200));
-        paymentSeries.getData().add(new XYChart.Data<>("March", 180));
-        paymentSeries.getData().add(new XYChart.Data<>("April", 220));
-        paymentSeries.getData().add(new XYChart.Data<>("May", 240));
-        paymentSeries.getData().add(new XYChart.Data<>("June", 300));
-        paymentSeries.getData().add(new XYChart.Data<>("July", 280));
-        paymentSeries.getData().add(new XYChart.Data<>("August", 310));
-        paymentSeries.getData().add(new XYChart.Data<>("September", 270));
-        paymentSeries.getData().add(new XYChart.Data<>("October", 290));
-        paymentSeries.getData().add(new XYChart.Data<>("November", 320));
-        paymentSeries.getData().add(new XYChart.Data<>("December", 330));
+        List<Object[]> monthlyTotalPayments = chartBO.getMonthlyTotalPayments();
+
+        // Sort the data by month (ascending order)
+        Collections.sort(monthlyTotalPayments, (row1, row2) -> {
+            int month1 = (int) row1[0];
+            int month2 = (int) row2[0];
+            return Integer.compare(month1, month2);
+        });
+
+
+        // Add the sorted data to the chart series
+        for (Object[] row : monthlyTotalPayments) {
+            int month = (int) row[0];
+            double amount = (double) row[1];
+            paymentSeries.getData().add(new XYChart.Data<>(String.valueOf(month), amount));
+        }
 
         paymentLineChart.getData().add(paymentSeries);
 
 //        pie chart
         // Add demo data to the PieChart
-        PieChart.Data courseA = new PieChart.Data("Course A", 30);
-        PieChart.Data courseB = new PieChart.Data("Course B", 25);
-        PieChart.Data courseC = new PieChart.Data("Course C", 20);
-        PieChart.Data courseD = new PieChart.Data("Course D", 15);
-        PieChart.Data courseE = new PieChart.Data("Course E", 10);
 
-        studentPieChart.getData().addAll(courseA, courseB, courseC, courseD, courseE);
+        // Get the student count for each course
+        List<Object[]> studentCourseCount = chartBO.getStudentCourseCount();
+
+        for (Object[] row : studentCourseCount) {
+            String courseName = (String) row[0];
+            System.out.println("courseName = " + courseName);
+            long count = (long) row[1];
+            System.out.println("count = " + count);
+            studentPieChart.getData().add(new PieChart.Data(courseName, count));
+        }
+
+
 
         // Add demo data to the PieChart
-        PieChart.Data programA = new PieChart.Data("Culinary Arts", 40);
-        PieChart.Data programB = new PieChart.Data("Baking & Pastry", 25);
-        PieChart.Data programC = new PieChart.Data("Food Science", 15);
-        PieChart.Data programD = new PieChart.Data("Hospitality Management", 10);
-        PieChart.Data programE = new PieChart.Data("Nutrition", 10);
+        List<Object[]> programsCountByDuration = chartBO.getProgramsCountByDuration();
 
-        programPieChart.getData().addAll(programA, programB, programC, programD, programE);
+        for (Object[] row : programsCountByDuration) {
+            String duration = (String) row[0];
+            long count = (long) row[1];
+            programPieChart.getData().add(new PieChart.Data(duration, count));
+        }
+
     }
 
     public void logOutBtn(ActionEvent actionEvent) {
@@ -150,7 +172,6 @@ public class DashboardController  implements Initializable {
             stage.setScene(scene);
             stage.setResizable(false);
             stage.initStyle(StageStyle.UNDECORATED);
-            stage.initStyle(StageStyle.TRANSPARENT);
 
             dashStage = (Stage)mainContainer.getScene().getWindow();
             dashStage.close();

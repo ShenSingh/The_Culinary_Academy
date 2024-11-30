@@ -91,6 +91,27 @@ public class StudentProgramDAOImpl implements StudentProgramDAO {
         return studentProgram;
     }
 
+    @Override
+    public List<Object[]> getStudentsByProgram(String selectedProgram) {
+        List<Object[]> students = null;
+        Session session = FactoryConfiguration.getInstance().getSession();
+        Transaction transaction = session.beginTransaction();
+
+        try {
+            students = session.createQuery(
+                    "select sp.student.studentId from StudentProgram sp where sp.program.programName = :selectedProgram",
+                    Object[].class)
+                    .setParameter("selectedProgram", selectedProgram) // Bind the parameter here
+                    .list();
+            transaction.commit();
+        } catch (Exception e) {
+            if (transaction != null) transaction.rollback();
+            throw new RuntimeException("Error fetching students by program: " + selectedProgram, e);
+        } finally {
+            session.close();
+        }
+        return students;
+    }
 
 
 }

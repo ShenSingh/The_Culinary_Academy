@@ -10,6 +10,8 @@ import com.zenveus.the_culinary_academy.dto.ProgramDto;
 import com.zenveus.the_culinary_academy.dto.StudentDto;
 import com.zenveus.the_culinary_academy.tm.ProgramTm;
 import com.zenveus.the_culinary_academy.tm.StudentTm;
+import com.zenveus.the_culinary_academy.util.Regex;
+import com.zenveus.the_culinary_academy.util.TextFields;
 import javafx.animation.TranslateTransition;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -64,10 +66,10 @@ public class StudentController implements Initializable {
     public TableColumn<?,?> colStuAddress;
     public TableView<StudentTm> studentTable;
     public TableColumn<?,?> colAction;
-    public JFXComboBox<String> paymentCombo;
-
-    public PieChart studentPie1;
+    public JFXComboBox paymentCombo;
     public PieChart studentPie2;
+    public PieChart studentPie1;
+    public ComboBox<String > stuFillterComboBox;
 
     private TranslateTransition sideTransition;
     private boolean isShow = false;
@@ -87,28 +89,6 @@ public class StudentController implements Initializable {
         setPaymentComboBox();
         setProgramComboAction();
         disableFields();
-        setChartValues();
-    }
-
-    private void setChartValues() {
-        //        pie chart
-        // Add demo data to the PieChart
-        PieChart.Data courseA = new PieChart.Data("Course A", 30);
-        PieChart.Data courseB = new PieChart.Data("Course B", 25);
-        PieChart.Data courseC = new PieChart.Data("Course C", 20);
-        PieChart.Data courseD = new PieChart.Data("Course D", 15);
-        PieChart.Data courseE = new PieChart.Data("Course E", 10);
-
-        studentPie1.getData().addAll(courseA, courseB, courseC, courseD, courseE);
-
-        // Add demo data to the PieChart
-        PieChart.Data programA = new PieChart.Data("Culinary Arts", 40);
-        PieChart.Data programB = new PieChart.Data("Baking & Pastry", 25);
-        PieChart.Data programC = new PieChart.Data("Food Science", 15);
-        PieChart.Data programD = new PieChart.Data("Hospitality Management", 10);
-        PieChart.Data programE = new PieChart.Data("Nutrition", 10);
-
-        studentPie2.getData().addAll(programA, programB, programC, programD, programE);
     }
 
     private void disableFields() {
@@ -211,13 +191,13 @@ public class StudentController implements Initializable {
         double advancePay = 0;
         switch (selectedPaymentOption) {
             case "3 inst":
-                advancePay = fee * 0.03;
+                advancePay = fee * 0.15;
                 break;
             case "6 inst":
-                advancePay = fee * 0.05;
+                advancePay = fee * 0.1;
                 break;
             case "12 inst":
-                advancePay = fee * 0.07;
+                advancePay = fee * 0.05;
                 break;
         }
 
@@ -232,8 +212,13 @@ public class StudentController implements Initializable {
 
     private void setProgramComboBox() {
         List<ProgramDto> allPrograms = programbo.getAllPrograms();
+
+        stuFillterComboBox.getItems().add("All Programs");
+
+
         for (ProgramDto program : allPrograms) {
             programCombo.getItems().add(program.getProgramId() + " - " + program.getProgramName());
+            stuFillterComboBox.getItems().add(program.getProgramName());
         }
     }
 
@@ -246,7 +231,7 @@ public class StudentController implements Initializable {
         colStuEmail.setCellValueFactory(new PropertyValueFactory<>("studentEmail"));
         colStuPhone.setCellValueFactory(new PropertyValueFactory<>("studentPhone"));
         colStuAddress.setCellValueFactory(new PropertyValueFactory<>("studentAddress"));
-        colAction.setCellValueFactory(new PropertyValueFactory<>("btn"));
+
     }
 
     private void setStudentID() {
@@ -292,8 +277,8 @@ public class StudentController implements Initializable {
         sideTransition.stop();  // Stop any ongoing transition before starting a new one
 
         // Set starting and ending points dynamically based on isShow
-        sideTransition.setFromX(isShow ? 870 : 0);
-        sideTransition.setToX(isShow ? 0 : 870);
+        sideTransition.setFromX(isShow ? 570 : 0);
+        sideTransition.setToX(isShow ? 0 : 570);
         sideTransition.setDuration(Duration.seconds(1.5));
 
         isShow = !isShow;  // Toggle the state
@@ -306,18 +291,41 @@ public class StudentController implements Initializable {
     public void studentBackBtn(ActionEvent actionEvent) {
         System.out.println("click student page back Btn");
 
-        System.out.println("click employee page back Btn");
+        // if fields are filled do not allow them to back
+
+        if (!studentIDField.getText().isEmpty() || !studentNameField.getText().isEmpty() || !studentNICField.getText().isEmpty() || studentDOBField.getValue() != null || !studentPhoneField.getText().isEmpty() || !studentEmailField.getText().isEmpty() || !studentAddressField.getText().isEmpty() || !selectProgramShow.getText().isEmpty() || !paymentDetailsTxtArea.getText().isEmpty()) {
+            new Alert(Alert.AlertType.WARNING, "Please save before going back.").show();
+            return;
+        }
 
         DashboardController dashboardController = new DashboardController();
         dashboardController.loadDashboard(reportMainAnchor);
     }
     // student search filed enter click (search bar)
     public void searchStudentClick(ActionEvent actionEvent) {
-        System.out.println("click student search filed");
+        System.out.println("click student search Btn");
+
+        String studentName = searchStudent.getText();
+
+        if (studentName.isEmpty()) {
+            loadAllStudents();
+            return;
+        }
+
+        List<StudentDto> allStudents = studentbo.getAllStudents();
+        observableList.clear();
+
+        for (StudentDto studentDto : allStudents) {
+            if (studentDto.getFullName().contains(studentName)) {
+                observableList.add(new StudentTm(studentDto.getStudentId(), studentDto.getFullName(), studentDto.getStudentNic(), getAge(studentDto.getDob()), studentDto.getEmail(), studentDto.getPhone(), studentDto.getAddress()));
+            }
+        }
+
+        studentTable.setItems(observableList);
     }
     // student search clear btn (search bar)
     public void searchStudentClearBtn(ActionEvent actionEvent) {
-        System.out.println("click student create Btn");
+        searchStudent.clear();
     }
 
 
@@ -332,6 +340,21 @@ public class StudentController implements Initializable {
     public void studentSaveBtn(ActionEvent actionEvent) {
         System.out.println("click student save Btn");
 
+        // no duplicate students
+        List<StudentDto> allStudents = studentbo.getAllStudents();
+        for (StudentDto student : allStudents) {
+            if (student.getStudentId().equals(studentIDField.getText())) {
+                new Alert(Alert.AlertType.ERROR, "Student ID already exists!").show();
+                return;
+            }
+        }
+
+        // all fields must be filled
+        if (studentIDField.getText().isEmpty() || studentNameField.getText().isEmpty() || studentNICField.getText().isEmpty() || studentDOBField.getValue() == null || studentPhoneField.getText().isEmpty() || studentEmailField.getText().isEmpty() || studentAddressField.getText().isEmpty()) {
+            new Alert(Alert.AlertType.ERROR, "Please fill all the fields.").show();
+            return;
+        }
+
         String studentId = studentIDField.getText();
         String studentName = studentNameField.getText();
         String studentNIC = studentNICField.getText();
@@ -341,6 +364,45 @@ public class StudentController implements Initializable {
         String studentAddress = studentAddressField.getText();
         LocalDate registrationDate = LocalDate.now();
         LocalTime registrationTime = LocalTime.now();
+
+        // Validations
+
+
+        if (!Regex.isTextFieldValid(TextFields.EMAIL, studentEmail)) {
+            new Alert(Alert.AlertType.ERROR, "Invalid Email!").show();
+            return;
+        }
+
+        if (!Regex.isTextFieldValid(TextFields.CONTACT, studentPhone)) {
+            new Alert(Alert.AlertType.ERROR, "Invalid Phone Number!").show();
+            return;
+        }
+
+        if (!Regex.isTextFieldValid(TextFields.NIC, studentNIC)) {
+            new Alert(Alert.AlertType.ERROR, "Invalid NIC!").show();
+            return;
+        }
+
+        if (!Regex.isTextFieldValid(TextFields.NAME, studentName)) {
+            new Alert(Alert.AlertType.ERROR, "Invalid Name!").show();
+            return;
+        }
+
+        // no duplicate emails
+        for (StudentDto student : allStudents) {
+            if (student.getEmail().equals(studentEmail)) {
+                new Alert(Alert.AlertType.ERROR, "Email already exists!").show();
+                return;
+            }
+        }
+
+        // no duplicate phone numbers
+        for (StudentDto student : allStudents) {
+            if (student.getPhone().equals(studentPhone)) {
+                new Alert(Alert.AlertType.ERROR, "Phone number already exists!").show();
+                return;
+            }
+        }
 
         StudentDto studentDto = new StudentDto(studentId, studentNIC, studentDOB, studentName, studentAddress, studentEmail, studentPhone, registrationDate, registrationTime);
 
@@ -381,6 +443,23 @@ public class StudentController implements Initializable {
 
         if (isSaved) {
             new Alert(Alert.AlertType.INFORMATION, "Student saved successfully.").show();
+
+            // Clear the fields after saving
+            studentIDField.clear();
+            studentNameField.clear();
+            studentNICField.clear();
+            studentDOBField.setValue(null);
+            studentPhoneField.clear();
+            studentEmailField.clear();
+            studentAddressField.clear();
+            selectProgramShow.clear();
+            paymentDetailsTxtArea.clear();
+            paymentCombo.getItems().clear();
+            programCombo.setValue(null);
+            payOptionCombo.setValue(null);
+            setStudentID();
+            loadAllStudents();
+
         } else {
             new Alert(Alert.AlertType.ERROR, "Failed to save student.").show();
         }
@@ -437,6 +516,50 @@ public class StudentController implements Initializable {
         String studentPhone = studentPhoneField.getText();
         String studentEmail = studentEmailField.getText();
         String studentAddress = studentAddressField.getText();
+
+        // Validations
+        List<StudentDto> allStudents = studentbo.getAllStudents();
+
+        if (studentName.isEmpty() || studentNIC.isEmpty() || studentDOB.isEmpty() || studentPhone.isEmpty() || studentEmail.isEmpty() || studentAddress.isEmpty()) {
+            new Alert(Alert.AlertType.ERROR, "Please fill all the fields.").show();
+            return;
+        }
+
+        if (!Regex.isTextFieldValid(TextFields.EMAIL, studentEmail)) {
+            new Alert(Alert.AlertType.ERROR, "Invalid Email!").show();
+            return;
+        }
+
+        if (!Regex.isTextFieldValid(TextFields.CONTACT, studentPhone)) {
+            new Alert(Alert.AlertType.ERROR, "Invalid Phone Number!").show();
+            return;
+        }
+
+        if (!Regex.isTextFieldValid(TextFields.NIC, studentNIC)) {
+            new Alert(Alert.AlertType.ERROR, "Invalid NIC!").show();
+            return;
+        }
+
+        if (!Regex.isTextFieldValid(TextFields.NAME, studentName)) {
+            new Alert(Alert.AlertType.ERROR, "Invalid Name!").show();
+            return;
+        }
+
+        // no duplicate emails
+        for (StudentDto student : allStudents) {
+            if (!student.getStudentId().equals(studentIDField.getText()) && student.getEmail().equals(studentEmail)) {
+                new Alert(Alert.AlertType.ERROR, "Email already exists!").show();
+                return;
+            }
+        }
+
+        // no duplicate phone numbers
+        for (StudentDto student : allStudents) {
+            if (!student.getStudentId().equals(studentIDField.getText()) && student.getPhone().equals(studentPhone)) {
+                new Alert(Alert.AlertType.ERROR, "Phone number already exists!").show();
+                return;
+            }
+        }
 
         StudentDto studentDto = new StudentDto();
         studentDto.setStudentId(studentId);
@@ -500,8 +623,21 @@ public class StudentController implements Initializable {
 
         try {
             boolean isUpdated = studentbo.updateStudentAndPrograms(studentDto, programDetailsList, Total);
-            // Reinitialize the controller
-            initialize(null, null);
+            // Clear the fields after saving
+            studentIDField.clear();
+            studentNameField.clear();
+            studentNICField.clear();
+            studentDOBField.setValue(null);
+            studentPhoneField.clear();
+            studentEmailField.clear();
+            studentAddressField.clear();
+            selectProgramShow.clear();
+            paymentDetailsTxtArea.clear();
+            paymentCombo.getItems().clear();
+            programCombo.setValue(null);
+            payOptionCombo.setValue(null);
+            setStudentID();
+            loadAllStudents();
 
             new Alert(Alert.AlertType.INFORMATION, "Student updated successfully.").show();
         } catch (Exception e) {
@@ -523,6 +659,8 @@ public class StudentController implements Initializable {
     public void rowClick(MouseEvent mouseEvent) {
         System.out.println("click row");
 
+        paymentCombo.getItems().clear();
+
         StudentTm selectedItem = studentTable.getSelectionModel().getSelectedItem();
         if (selectedItem == null) {
             return;
@@ -540,6 +678,14 @@ public class StudentController implements Initializable {
 
         // Load the programs and payments for the selected student
         loadProgramsAndPayments(student.getStudentId());
+
+        if (isShow) {
+            sideTransition.setFromX(isShow ? 570 : 0);
+            sideTransition.setToX(isShow ? 0 : 850);
+            sideTransition.setDuration(Duration.seconds(1.5));
+            updateIcon();
+            sideTransition.play();
+        }
 
     }
 
@@ -575,15 +721,21 @@ public class StudentController implements Initializable {
             if (selectedProgram == null) return;
 
             // Extract program ID and name
-            String[] parts = selectedProgram.split(" - ");
-            String programId = parts[0].trim();
-            String programName = parts[1].trim();
+            List<String> parts = new ArrayList<>(Arrays.asList(selectedProgram.split("-")));
+            if (parts.size() < 2) return; // Ensure there are enough parts
+
+            String programId = parts.get(0).trim();
+            String programName = parts.get(1).trim();
+
+            System.out.println("Selected Program: " + programId + " - " + programName);
 
             // Find program details
             String[] programDetails = programText.toString().split("Program ID: " + programId);
             if (programDetails.length < 2) return; // If program not found, exit
 
             String[] programDetailsParts = programDetails[1].split("\n");
+            if (programDetailsParts.length < 6) return; // Ensure there are enough parts
+
             String paymentOption = programDetailsParts[4].split(":")[1].trim();
             String installmentFee = programDetailsParts[5].split(":")[1].trim();
 
@@ -603,7 +755,7 @@ public class StudentController implements Initializable {
             }
 
             // Check if the program is already added
-            if (paymentDetails.contains(programName)) {
+            if (paymentDetails.contains(programId)) {
                 new Alert(Alert.AlertType.WARNING, "The selected program is already added.").show();
                 return;
             }
@@ -619,7 +771,6 @@ public class StudentController implements Initializable {
             // Update the payment details text area
             paymentDetailsTxtArea.setText(updatedPaymentText.toString());
         });
-
     }
 
     public void loadAllStudents() {
@@ -627,8 +778,7 @@ public class StudentController implements Initializable {
         observableList.clear();
 
         for (StudentDto studentDto : allStudents) {
-            JFXButton btn = new JFXButton("Delete");
-            observableList.add(new StudentTm(studentDto.getStudentId(), studentDto.getFullName(), studentDto.getStudentNic(), getAge(studentDto.getDob()), studentDto.getEmail(), studentDto.getPhone(), studentDto.getAddress(), btn));
+            observableList.add(new StudentTm(studentDto.getStudentId(), studentDto.getFullName(), studentDto.getStudentNic(), getAge(studentDto.getDob()), studentDto.getEmail(), studentDto.getPhone(), studentDto.getAddress()));
         }
         studentTable.setItems(observableList);
     }
@@ -638,4 +788,46 @@ public class StudentController implements Initializable {
         LocalDate currentDate = LocalDate.now();
         return String.valueOf(currentDate.getYear() - birthDate.getYear());
     }
+
+    public void onFilterAction(ActionEvent event) {
+        String selectedProgram = stuFillterComboBox.getValue().toString();
+        System.out.println("selected: "+selectedProgram);
+
+        // Clear the observable list before filtering
+        observableList.clear();
+
+        // If "All Programs" is selected, handle that case
+        if ("All Programs".equals(selectedProgram)) {
+            System.out.println("All program selected");
+            List<Object[]> studentsDoingAllPrograms = studentbo.getStudentsDoingAllPrograms();
+
+            // Add students who are in all programs
+            for (Object[] student : studentsDoingAllPrograms) {
+                for (StudentDto studentDto : studentbo.getAllStudents()) {
+                    if (studentDto.getStudentId().equals(student[0])) {
+                        observableList.add(new StudentTm(studentDto.getStudentId(), studentDto.getFullName(), studentDto.getStudentNic(),
+                                getAge(studentDto.getDob()), studentDto.getEmail(), studentDto.getPhone(), studentDto.getAddress()));
+                    }
+                }
+            }
+        } else {
+            System.out.println("Other selected");
+            // Handle specific program filter
+            List<Object[]> filteredStudents = studentbo.getStudentsByProgram(selectedProgram);
+
+            // Add students in the selected program
+            for (Object[] student : filteredStudents) {
+                for (StudentDto studentDto : studentbo.getAllStudents()) {
+                    if (studentDto.getStudentId().equals(student[0])) {
+                        observableList.add(new StudentTm(studentDto.getStudentId(), studentDto.getFullName(), studentDto.getStudentNic(),
+                                getAge(studentDto.getDob()), studentDto.getEmail(), studentDto.getPhone(), studentDto.getAddress()));
+                    }
+                }
+            }
+        }
+
+        // Set the observable list to the table
+        studentTable.setItems(observableList);
+    }
+
 }

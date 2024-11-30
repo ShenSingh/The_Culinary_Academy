@@ -16,5 +16,4 @@ public class StudentTm {
     private String studentEmail;
     private String studentPhone;
     private String studentAddress;
-    private JFXButton btn;
 }

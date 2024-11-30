@@ -9,6 +9,7 @@ import com.zenveus.the_culinary_academy.tm.UserTm;
 import com.zenveus.the_culinary_academy.util.BCryptHasher;
 import com.zenveus.the_culinary_academy.util.Regex;
 import com.zenveus.the_culinary_academy.util.TextFields;
+import com.zenveus.the_culinary_academy.Exception.RegistrationException;
 
 import javafx.animation.TranslateTransition;
 import javafx.application.Platform;
@@ -36,6 +37,7 @@ import javafx.util.Duration;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
+import java.sql.SQLException;
 import java.util.List;
 import java.util.ResourceBundle;
 
@@ -110,7 +112,7 @@ public class EmployeeController implements Initializable {
     private void setTransition() {
         sideTransition = new TranslateTransition(Duration.seconds(1.5), employeeRegMainAnchor);
         sideTransition.setFromX(0);
-        sideTransition.setToX(550); // Set initial `toX` based on `isShow`
+        sideTransition.setToX(250); // Set initial `toX` based on `isShow`
         updateIcon();
     }
     //   update side menu icon
@@ -126,8 +128,8 @@ public class EmployeeController implements Initializable {
         sideTransition.stop();  // Stop any ongoing transition before starting a new one
 
         // Set starting and ending points dynamically based on isShow
-        sideTransition.setFromX(isShow ? 550 : 0);
-        sideTransition.setToX(isShow ? 0 : 550);
+        sideTransition.setFromX(isShow ? 250 : 0);
+        sideTransition.setToX(isShow ? 0 : 250);
         sideTransition.setDuration(Duration.seconds(1.5));
 
         isShow = !isShow;  // Toggle the state
@@ -172,46 +174,57 @@ public class EmployeeController implements Initializable {
     }
 
     // employee delete btn
-    public void employeeDeleteBtn(ActionEvent actionEvent) {
+    public void employeeDeleteBtn(ActionEvent actionEvent) throws SQLException {
         System.out.println("click employee delete Btn");
 
-        UserDto user = new UserDto();
-        user.setUserId(employeeIDField.getText());
-        user.setFullName(employeeNameField.getText());
-        user.setEmail(employeeEmailField.getText());
-        user.setPhoneNumber(employeePhoneField.getText());
-        user.setAddress(employeeAddressField.getText());
-        user.setJobRole(userJob.getValue());
+        try {
+            UserDto user = new UserDto();
+            user.setUserId(employeeIDField.getText());
+            user.setFullName(employeeNameField.getText());
+            user.setEmail(employeeEmailField.getText());
+            user.setPhoneNumber(employeePhoneField.getText());
+            user.setAddress(employeeAddressField.getText());
+            user.setJobRole(userJob.getValue());
 
-        UserDto userDto = userBO.isUserExist(user);
+            UserDto userDto = userBO.isUserExist(user);
 
-        if(userDto == null){
-            new Alert(Alert.AlertType.ERROR, "Employee Not Found!").showAndWait();
-            return;
-        }
+            if(userDto == null){
+                new Alert(Alert.AlertType.ERROR, "Employee Not Found!").showAndWait();
+                return;
+            }
 
-        boolean isDeleted = userBO.deleteUser(userDto);
+            boolean isDeleted = userBO.deleteUser(userDto);
 
-        if(isDeleted){
-            new Alert(Alert.AlertType.INFORMATION, "Employee Deleted Successfully!").showAndWait();
-            setEmployeeID();
-            clearAllFields();
-            loadAllEmployees();
-        }else{
-            new Alert(Alert.AlertType.ERROR, "Failed to Delete Employee!").showAndWait();
+            if(isDeleted){
+                new Alert(Alert.AlertType.INFORMATION, "Employee Deleted Successfully!").showAndWait();
+                setEmployeeID();
+                clearAllFields();
+                loadAllEmployees();
+            }else{
+                new Alert(Alert.AlertType.ERROR, "Failed to Delete Employee!").showAndWait();
+            }
+        } catch (Exception e) {
+            new Alert(Alert.AlertType.ERROR, e.getMessage()).showAndWait();
+            throw new SQLException(e);
         }
     }
     // employee save btn
     public void employeeSaveBtn(ActionEvent actionEvent) {
         System.out.println("click employee save Btn");
 
+        // all employee fields must be filled
+        if(employeeIDField.getText().isEmpty() || employeeEmailField.getText().isEmpty() || employeeNameField.getText().isEmpty() || employeePhoneField.getText().isEmpty() || employeeAddressField.getText().isEmpty() || userJob.getValue() == null){
+            new Alert(Alert.AlertType.WARNING, "All Fields Must Be Filled!").showAndWait();
+            return;
+        }
+
         String employeeID = employeeIDField.getText();
         String employeeEmail = employeeEmailField.getText();
         String employeeName = employeeNameField.getText();
         String employeePhone = employeePhoneField.getText();
         String employeeAddress = employeeAddressField.getText();
-        String username = generateUsername();
-        String password = generatePassword(userJob.getValue());
+        String username = generateUsername(employeeName);
+        String password = generatePassword(employeeName);
         String jobRole = userJob.getValue();
 
 
@@ -260,28 +273,49 @@ public class EmployeeController implements Initializable {
 
         try {
             boolean isAdded = userBO.addUser(userDTO);
-            if(isAdded){
-                new Alert(Alert.AlertType.INFORMATION, "Employee Added Successfully!").showAndWait();
+            if (isAdded) {
+                Platform.runLater(() -> {
+                    new Alert(Alert.AlertType.INFORMATION, "Employee Added Successfully!").showAndWait();
+                });
+
                 setEmployeeID();
                 clearAllFields();
                 loadAllEmployees();
-            }else{
+            } else {
                 new Alert(Alert.AlertType.ERROR, "Failed to Add Employee!").showAndWait();
             }
+        } catch (RegistrationException e) {
+            new Alert(Alert.AlertType.ERROR, e.getMessage()).showAndWait();
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
-    private String generatePassword(String jodName) {
+    private String generatePassword(String employeeName) {
+        String base = employeeName.split("\\s+")[0].toLowerCase();
+        int randomNum = (int) (Math.random() * 10000);
+        String specialChars = "!@#$%^&*";
+        char specialChar = specialChars.charAt((int) (Math.random() * specialChars.length()));
 
-        if(jodName.equals("Admin")){
-            return BCryptHasher.hashPassword("admin");
-        }
-        return BCryptHasher.hashPassword("coordinator");
+        String password = base + randomNum + specialChar;
+        System.out.println("password: " + password);
+
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle("Generated Password");
+        alert.setHeaderText(null);
+        alert.setContentText("Generated Password: " + password);
+        alert.showAndWait();
+
+        setEmployeeID();
+        clearAllFields();
+        loadAllEmployees();
+
+        return BCryptHasher.hashPassword(password);
     }
-    private String generateUsername() {
-        return employeeIDField.getText();
+
+    private String generateUsername(String employeeName) {
+        // username is the first word of the full name
+        return employeeName.split("\\s+")[0].toLowerCase();
     }
 
     private boolean isPhoneExist(String employeePhone) {
@@ -321,6 +355,18 @@ public class EmployeeController implements Initializable {
     // employee update btn
     public void employeeUpdateBtn(ActionEvent actionEvent) {
         System.out.println("click employee update Btn");
+
+        // no duplicate employees can be added
+        List<UserDto> allUsers = userBO.getAllUsers();
+
+        // id is already existing do not add
+        for (UserDto user : allUsers) {
+            if (user.getUserId().equals(employeeIDField.getText())) {
+                new Alert(Alert.AlertType.WARNING, "Employee ID already exists!").showAndWait();
+                return;
+            }
+        }
+
 
         UserDto user = new UserDto();
         user.setUserId(employeeIDField.getText());
@@ -421,7 +467,7 @@ public class EmployeeController implements Initializable {
             if(isShow){
                 isShow = false;
                 sideTransition.setDuration(Duration.seconds(2));
-                sideTransition.setToX(isShow ? 550 : 0);
+                sideTransition.setToX(isShow ? 250 : 0);
                 updateIcon();
                 sideTransition.play();
             }

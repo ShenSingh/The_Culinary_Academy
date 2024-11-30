@@ -21,7 +21,7 @@ public class StudentProgram {
     private Student student;
 
     @ManyToOne(cascade = {CascadeType.MERGE})
-    @JoinColumn(name = "program_id", nullable = false)
+    @JoinColumn(name = "program_id")
     private Program program;
 
     @Column(name = "pay_option")

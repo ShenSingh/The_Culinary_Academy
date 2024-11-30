@@ -13,4 +13,5 @@ public interface StudentProgramDAO extends CrudDAO<StudentProgram> {
 
     StudentProgram exist(String programDetail, String studentId);
 
+    List<Object[]> getStudentsByProgram(String selectedProgram);
 }

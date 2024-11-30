@@ -29,7 +29,7 @@ public class Regex {
                 filed = "^([0-9]){10}$";
                 break;
             case NIC:
-                filed = "^([0-9]){9}[V|v]$";
+                filed = "^([0-9]{9}[Vv]|[0-9]{12})$";
                 break;
             case SALARY:
                 filed = "^([0-9]{1,}[.][0-9]{1,})$";

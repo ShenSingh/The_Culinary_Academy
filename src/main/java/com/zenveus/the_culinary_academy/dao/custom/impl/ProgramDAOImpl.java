@@ -4,6 +4,7 @@ import com.zenveus.the_culinary_academy.config.FactoryConfiguration;
 import com.zenveus.the_culinary_academy.dao.custom.ProgramDAO;
 import com.zenveus.the_culinary_academy.entity.Program;
 import org.hibernate.Session;
+import org.hibernate.query.Query;
 
 import java.util.List;
 
@@ -66,9 +67,44 @@ public class ProgramDAOImpl implements ProgramDAO {
     public void delete(String programId) {
         Session session = FactoryConfiguration.getInstance().getSession();
         session.getTransaction().begin();
-        Program program = session.get(Program.class, programId);
-        session.delete(program);
+
+        try {
+            // Fetch the Program entity
+            Program program = session.get(Program.class, programId);
+
+            if (program != null) {
+                // Nullify the program references in StudentProgram
+                Query query = session.createQuery("UPDATE StudentProgram sp SET sp.program = NULL WHERE sp.program.programId = :programId");
+                query.setParameter("programId", programId);
+                query.executeUpdate();
+
+                // Now delete the program
+                session.delete(program);
+            } else {
+                System.out.println("Program not found with ID: " + programId);
+            }
+
+            session.getTransaction().commit();
+        } catch (Exception e) {
+            session.getTransaction().rollback();
+            e.printStackTrace();
+        } finally {
+            session.close();
+        }
+    }
+
+    @Override
+    public List<Object[]> getProgramsCountByDuration() {
+        List<Object[]> programsCountByDuration = null;
+
+        Session session = FactoryConfiguration.getInstance().getSession();
+        session.getTransaction().begin();
+        programsCountByDuration = session.createQuery("SELECT p.duration, COUNT(p.programId) FROM Program p GROUP BY p.duration", Object[].class)
+                .list();
         session.getTransaction().commit();
         session.close();
+
+        return programsCountByDuration;
     }
+
 }

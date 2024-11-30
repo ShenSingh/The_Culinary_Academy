@@ -199,9 +199,15 @@ public class StudentBOIMPL implements StudentBO {
             studentProgramDto.setProgram(programDto);
             studentProgramDto.setPayOption(paymentOption);
             studentProgramDto.setInstallmentFee(installmentFee);
+
+            // if the total due is less than 10, set total due to 0
+            if (totalDue <= 10) {
+                totalDue = 0;
+            }
+
             studentProgramDto.setTotalDue(totalDue);
 
-            if (totalDue == 0) {
+            if (totalDue <= 10) {
                 studentProgramDto.setPayStatus("Paid");
             } else {
                 studentProgramDto.setPayStatus("Not Paid");
@@ -292,7 +298,7 @@ public class StudentBOIMPL implements StudentBO {
 
                 System.out.println("\n\n===================\nTotal Due: " + totalDue);
                 studentProgram.setTotalDue(totalDue);
-                studentProgram.setPayStatus(totalDue <= 0 ? "Paid" : "Not Paid");
+                studentProgram.setPayStatus(totalDue <= 10 ? "Paid" : "Not Paid");
 
                 studentPrograms.add(studentProgram);
 
@@ -334,6 +340,8 @@ public class StudentBOIMPL implements StudentBO {
                 System.out.println("Total Due: " + totalDue);
                 System.out.println("Payment Status: " + studentProgram.getPayStatus());
 
+                // itf the total due is less than or equal to zero, set the payment status to paid
+
                 // Add to the list of student programs
                 studentPrograms.add(studentProgram);
             } catch (NumberFormatException e) {
@@ -372,6 +380,28 @@ public class StudentBOIMPL implements StudentBO {
         }
 
         return isUpdated;
+    }
+
+    @Override
+    public List<Object[]> getStudentsByProgram(String selectedProgram) {
+        List<Object[]> studentsByProgram = null;
+        try {
+            studentsByProgram = studentProgramDAO.getStudentsByProgram(selectedProgram);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+        return studentsByProgram;
+    }
+
+    @Override
+    public List<Object[]> getStudentsDoingAllPrograms() {
+        List<Object[]> studentsDoingAllPrograms = null;
+        try {
+            studentsDoingAllPrograms = studentProgramTransDAO.getStudentsDoingAllPrograms();
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+        return studentsDoingAllPrograms;
     }
 
 }
